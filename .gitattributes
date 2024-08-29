@@ -1,3 +1,4 @@
 .env filter=git-crypt diff=git-crypt
 auth/** filter=git-crypt diff=git-crypt
+auth/**/*.gitkeep !filter
 .gitattributes !filter !diff
