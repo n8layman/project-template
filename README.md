@@ -18,350 +18,79 @@ CC-BY-4.0](https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-blue.sv
 
 <!-- badges: end -->
 
-This is a template repository of a containerised R workflow built on the
-`targets` framework, made portable using `renv`, and ran manually or
-automatically using `GitHub Actions`. To use this template click on the
-“use this template button” and then select create a new repository.
+This repository is a project pipeline template
 
-Check out the
-[`containerTemplateUtils`](https://github.com/ecohealthalliance/containerTemplateUtils)
-package for handling common tasks related to this repo (sending emails,
-uploading files to AWS, etc. )
+## Set-up and installation
 
-Note that `git-crypt` is not part of the template repo. See the [EHA M&A
-handbook](https://ecohealthalliance.github.io/eha-ma-handbook/16-encryption.html#set-up-encryption-for-a-repo-that-did-not-previously-use-git-crypt)
-for how to add git-crypt.
+This pipeline was created using R version 4.3.2 (2023-10-31 ucrt). This
+project uses the {renv} framework to record R package dependencies and
+versions. Packages and versions used are recorded in the `renv.lock`.
 
-Follow the links for more information about:
+- Clone the repository
+  - In the terminal enter
+    `git clone https://github.com/ecohealthalliance/WABNET-analysis.git`
+    in a suitable directory
+- Duplicate the R environment used for the analysis:
+  - This project was created using R version 4.3.2. This and other
+    versions of R are available on the [R Archive
+    Network](https://cloud.r-project.org/)
+  - This project uses the {renv} framework to record R package
+    dependencies and versions. Packages and versions used are recorded
+    in the `renv.lock` file.
+  - To install the {renv} package run `install.packages("renv")`
+  - Run `renv::hydrate()` to copy whatever packages are already
+    available in your user / site libraries into the project library
+  - Run `renv::restore()` to install any remaining required packages
+    into your project library.
 
-- [`targets`](https://ecohealthalliance.github.io/eha-ma-handbook/3-projects.html#targets)
-- [`renv`](https://ecohealthalliance.github.io/eha-ma-handbook/3-projects.html#package-management-with-renv)  
-- [git-crypt](https://ecohealthalliance.github.io/eha-ma-handbook/16-encryption.html)
-- [Reproducible
-  workflows](https://github.com/ecohealthalliance/building-blocks-of-reproducibility)
+## Targets workflow
 
-Recommendations:  
-- One function per file in R/  
-- Non-function R scripts in another directory like `scripts/`  
-- Use the same names for targets and function arguments for those
-targets unless a function  
-- Nouns for targets, verbs for functions  
-- Use common suffixes for target types: `_file` for files, `_raw` for
-read-in but unprocessed data  
-- Use `fnmate` and `tflow` RStudio Add-Ins to make this easy, create
-shortcuts for these add-ins
-([talk](https://www.youtube.com/watch?v=jU1Zv21GvT4)), or the `usethis`
-package
+The project pipeline has been automated using the the {targets} pipeline
+management tool. {Targets} breaks down the analysis into a series of
+discrete, skippable computational steps. Individual steps can be loaded
+into memory using tar_load(target_name). An overview of the pipeline can
+be found in the `_targets.R` file in the main project folder. Each
+component, such as data ingest, is further broken out into its own
+collection of targets as indicated in the `_targets.R` file.
 
-## Quick start
+Targets are organized into distinct groups, including:
 
-- Create repo from template
-- rename .Rproj file
-- streamline packages in `packages.R`
-- modify `.gitattributes` to include any files that may need encryption
-- initialize `git-crypt` for repo
-- add relevant environment variables to `.env` file
-- rename github actions workflows
-- update safe repo section of github action
-- add `git-crypt` key as secret variable to repo
+1.  Data ingest targets
+2.  Data processing targets
+3.  Analysis targets
+4.  Output targets
 
-## GitHub Actions
+All targets are defined within the `_targets.R` file.
 
-[GitHub Actions](https://docs.github.com/en/actions) allows automation,
-customisation, and execution of your research project workflows right in
-your GitHub repository.
+## Re-running computationally expensive targets
 
-In gist, [GitHub Actions](https://docs.github.com/en/actions) is a
-*workflow* composed of a *job* or a number of *jobs*. The *job/s* are
-then composed of *steps* that control the order in which *actions* are
-run in order to complete a *job/s*. This *workflow* is scheduled or
-triggered by a specific *event* and runs on what is called a *runner* -
-a server that has the [GitHub
-Actions](https://docs.github.com/en/actions) runner application
-installed - that is either hosted by GitHub, or self-hosted on your own
-machines.
+Some targets are computationally intensive and long-running. The output
+of these targets has been saved in the `\data` folder as compressed RDS
+files. These files end in ‘.gz’ and can be manually accessed using
+`read_rds()` or automatically through the targets pipeline. By default
+these steps will not be re-computed and are disconnected in the pipeline
+DAG unless a flag is set in the `.env` file. A description of these
+flags can be found at the top of the `_targets.R` and in the `.env`
+file.
 
-This whole **workflow** including the **event** trigger and the
-**runner** on which the **workflow** will run in are specified and
-detailed using a workflow `.yml` file that is saved inside a directory
-named `.github` within your GitHub repository in which you want to use
-[GitHub Actions](https://docs.github.com/en/actions) on.
+## Pipeline Overview
 
-<img src=https://miro.medium.com/max/2617/1*8mUtip6z_oydfLi4P86KUw.png />
+## Misc
 
-This repository, contains a template [GitHub
-Actions](https://docs.github.com/en/actions) workflow with its
-corresponding `.yml` file that illustrates how [GitHub
-Actions](https://docs.github.com/en/actions) can be used to run and
-maintain an R workflow that uses `targets` and `renv`.
+A hook to prevent users from commiting files greater than GitHub’s 100Mb
+file size limit is available in the `.githooks` folder. To enable this
+copy the `.githooks/pre-commit` file to the `.git/hooks` directory by
+running the following command in the terminal within the project base
+directory
 
-## Using containers in GitHub Actions workflow
+    cp .githooks/pre-commit .git/hooks/pre-commit
 
-A **container** is a standard unit of software that packages up code and
-all its dependencies so the application runs quickly and reliably from
-one computing environment to another.
+## References
 
-**Containers** can be used within a [GitHub
-Actions](https://docs.github.com/en/actions) workflow and can be
-specified either at the **job** level or at the **step** level. If
-specified at the **job** level, all the **steps** within that **job**
-will be run inside that container. When specified at the **steps**
-level, different containers can be used for each **step**.
+### This project uses [targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
 
-The example/template workflow can be found inside the `.github` folder
-and is shown below:
+### This project uses [gitflow](https://github.com/nvie/gitflow) to manage project development.
 
-``` yaml
-name: container-workflow-template
+### This project uses [git-crypt](https://github.com/AGWA/git-crypt) to encrypt sensitive information such as API keys.
 
-on:
-  push:
-    branches:
-      - main
-      - master
-  pull_request:
-    branches:
-      - main
-      - master
-  workflow_dispatch:
-    branches:
-      - '*'
-  #schedule:
-  #  - cron: "0 8 * * *"
-      
-jobs:
-  container-workflow-tempalte:
-    runs-on: ubuntu-latest                                # Run on GitHub Actions runner
-    #runs-on: [self-hosted, linux, x64, onprem-aegypti]   # Run the workflow on EHA aegypti runner
-    #runs-on: [self-hosted, linux, x64, onprem-prospero]  # Run the workflow on EHA prospero runner
-    container:
-      image: rocker/verse:4.1.2
-      
-    steps:
-      - uses: actions/checkout@v2
-    
-      - name: Install system dependencies
-        run: |
-          apt-get update && apt-get install -y --no-install-recommends \
-          libcurl4-openssl-dev \
-          libssl-dev
-      
-      - name: Restore R packages
-        run: |
-          renv::restore()
-        shell: Rscript {0}
-    
-      - name: Run targets workflow
-        run: |
-          targets::tar_make()
-        shell: Rscript {0}
-```
-
-In this example, we show a data quality check workflow report for a
-nutrition survey of children 6-59 months old.
-
-### The trigger
-
-The trigger for GitHub Actions is specified in these lines in the
-workflow YAML file:
-
-``` yaml
-on:
-  push:
-    branches:
-      - main
-      - master
-  pull_request:
-    branches:
-      - main
-      - master
-  workflow_dispatch:
-    branches:
-      - '*'
-  #schedule:
-  #  - cron: "0 8 * * *"
-```
-
-This workflow automatically runs when there is a **push** or **pull
-request** event to the main branch of the repository. This workflow has
-also been set to have the option to be run manually from the GitHub
-Actions page for any branch of the repository through the
-`workflow-dispatch` specification in the workflow YAML file.
-
-GitHub Actions can also be scheduled to run at specific times and
-frequency using the `schedule` specification in the workflow YAML file
-using [POSIX cron syntax](https://en.wikipedia.org/wiki/Cron). Scheduled
-workflows run on the latest commit on the default or base branch. The
-shortest interval you can run scheduled workflows is once every 5
-minutes. In the example workflow, the `schedule` specification has been
-set to run at 8 am everyday but this has been hashed out. If you would
-like to schedule your workflow runs, remove the hash and then set the
-POSIX cron syntax to the frequency that you require. *Note while github
-actions is highly reliable Github does not guarantee that a scheduled
-job will run if you’re using github servers and jobs are less likely to
-run if you choose a popular run time (generally on the hour).*
-
-### The job
-
-The job for GitHub Actions is specified in these lines in the workflow
-YAML file:
-
-``` yaml
-jobs:
-  container-workflow-template:
-    runs-on: ubuntu-latest                                # Run on GitHub Actions runner
-    #runs-on: [self-hosted, linux, x64, onprem-aegypti]   # Run the workflow on EHA aegypti runner
-    #runs-on: [self-hosted, linux, x64, onprem-prospero]  # Run the workflow on EHA prospero runner
-    container:
-      image: rocker/verse:4.1.2
-```
-
-The job named `container-workflow-template` is specified to run on
-runners hosted by GitHub Actions. These runners can be identified
-through a tag that specifies the operating software followed by the
-version. In the example workflow, the line specifying
-`runs-on: ubuntu-latest` runs the workflow on a machine hosted by GitHub
-Actions with the latest Ubuntu operating software.
-
-The job can also be run on a self-hosted GitHub Actions runner that is
-installed on EHA’s high performance computing machines using the
-`runs-on` workflow YAML specification. Tags unique to this GitHub runner
-are used to identify the specific machine to use. Syntax on how to
-specify these runners are shown but hashed out.
-
-To further make the GitHub Actions workflow more robust and
-reproducible, we setup a container at the **job** level. The container
-specified is a versioned R image that has `tidyverse` and other R
-publishing tools installed. This container image would generally be
-adequate for most workflows that require data wrangling and manipulation
-using the `tidyverse` tools and reporting using `rmarkdown`. Some
-projects/workflows (like those using spatial packages such as `sf`) may
-benefit from using a different R image so change the container
-specification accordingly. To read more about available R images, see
-<https://www.rocker-project.org/images/>.
-
-## Using this GitHub Actions workflow template
-
-This repository has been set as a private template repository. This
-means that this can be used by EHA staff for creating new repositories
-with the same filesystem.
-
-This can be done as follows:
-
-1.  In your GitHub account, go to the EcoHealth Alliance organisation
-    (<https://github.com/ecohealthalliance>) then click on the green
-    button labeled `New`.
-
-2.  You will now be directed to the `Create new repository` page. Here,
-    right at the top, you will see the `Repository template` heading.
-    Click on the drop down button right below this that says
-    `No template`. You will then see all the available templates within
-    EHA. Select the template named
-    `ecohealthalliance/container-template`.
-
-3.  Give your new repository a name, set the appropriate repository
-    visibility, and then click on `Create repository`.
-
-4.  You will now have a new repository the contents of which are the
-    same files and structure as this template repository.
-
-5.  You can now make the necessary changes and additions that are
-    specific to your workflow.
-
-## Using `git-crypt` to encrypt files in your workflow
-
-Your project may contain a mix of public and private content. Being able
-to encrypt the private contents of your project is very useful. It is
-recommended that you use PGP (Pretty Good Privacy) encryption,
-implemented by the program
-[`git-crypt`](https://github.com/AGWA/git-crypt). It takes a bit to set
-up but once activated makes sharing secure and seamless. To setup PGP
-and `git-crypt` on your project that is based on this template, see the
-[*Encryption* chapter of the EHA Modeling and Analytics
-Handbook](https://ecohealthalliance.github.io/eha-ma-handbook/14-encryption.html).
-
-Once you have enabled `git-crypt` on your project, you will need to make
-the following edits to the `container-workflow-template.yml` file to be
-able to perform symmetric key decryption described
-[here](https://ecohealthalliance.github.io/eha-ma-handbook/14-encryption.html#extra-use-a-symmetric-key-for-automated-processes).
-Here is the `container-workflow-template.yml` file updated to allow and
-perform symmetric key decryption:
-
-``` yaml
-name: container-workflow-encrypted-template
-
-on:
-  push:
-    branches:
-      - main
-      - master
-  pull_request:
-    branches:
-      - main
-      - master
-  workflow_dispatch:
-    branches:
-      - '*'
-  #schedule:
-  #  - cron: "0 8 * * *"
-
-env:
-  GIT_CRYPT_KEY64: ${{ secrets.GIT_CRYPT_KEY64 }}
-      
-jobs:
-  container-workflow-encrypted-tempalte:
-    runs-on: ubuntu-latest                                # Run on GitHub Actions runner
-    #runs-on: [self-hosted, linux, x64, onprem-aegypti]   # Run the workflow on EHA aegypti runner
-    #runs-on: [self-hosted, linux, x64, onprem-prospero]  # Run the workflow on EHA prospero runner
-    container:
-      image: rocker/verse:4.1.2
-      
-    steps:
-      - uses: actions/checkout@v2
-    
-      - name: Install system dependencies
-        run: |
-          apt-get update && apt-get install -y --no-install-recommends \
-          git-crypt \
-          libcurl4-openssl-dev \
-          libssl-dev
-          
-      - name: Decrypt repository using symmetric key
-        run: |
-          echo $GIT_CRYPT_KEY64 > git_crypt_key.key64 && base64 -di git_crypt_key.key64 > git_crypt_key.key && git-crypt unlock git_crypt_key.key
-          rm git_crypt_key.key git_crypt_key.key64
-      
-      - name: Restore R packages
-        run: |
-          renv::restore()
-        shell: Rscript {0}
-    
-      - name: Run targets workflow
-        run: |
-          targets::tar_make()
-        shell: Rscript {0}
-```
-
-Once you have edited your worklfow YAML file and before you push the
-changes to GitHub, you will then have to add the symmetric key to your
-GitHub repository as a secret.
-
-First, generate a symmetric key by running this in your project
-directory.
-
-``` bash
-git-crypt export-key git_crypt_key.key
-```
-
-`git_crypt_key.key` can now be used to decrypt the repository, and you
-can provide it to GitHub Actions as a secret environment variable (see
-<https://docs.github.com/en/actions/security-guides/encrypted-secrets>).
-However, since it is binary data, you’ll need to convert it to base64
-first. So run something like:
-
-``` bash
-cat git_crypt_key.key | base64 | pbcopy
-```
-
-to convert this file to base64 data, then paste it in GitHub’s secret
-environment variable field as `GIT_CRYPT_KEY64`.
+### This project used [renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions

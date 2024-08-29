@@ -1,35 +1,38 @@
-# Use the local user's .Rprofile when interative.
-# Good for keeping local preferences, but not always reproducible.
-user_rprof <- Sys.getenv("R_PROFILE_USER", normalizePath("~/.Rprofile", mustWork = FALSE))
-if(interactive() && file.exists(user_rprof)) {
-  source(user_rprof)
+# Load env vars from any file starting with `.env`. This allows user-specific
+# options to be set in `.env_user` (which is .gitignored), and to have both
+# encrypted and non-encrypted .env files
+load_env <- function(){
+  for (env_file in list.files(all.files = TRUE, pattern = "^\\.env.*")) {
+    try(readRenviron(env_file), silent = TRUE)
+  }
 }
-rm(user_rprof)
+load_env()
 
-if (file.exists(".env")) {
-  try(readRenviron(".env"), silent = TRUE)
+# If there is a bucket, cache targets remotely. Otherwise, do so locally.
+if(!nzchar(Sys.getenv("TAR_PROJECT"))) {
+  if(nzchar(Sys.getenv("AWS_BUCKET_ID"))) {
+    Sys.setenv(TAR_PROJECT = "s3")
+  } else {
+    Sys.setenv(TAR_PROJECT = "main")
+  }
 }
 
 # Set options for renv convenience
 options(
-  repos = c(RSPM = "https://packagemanager.rstudio.com/all/latest",
-            CRAN = "https://cran.rstudio.com/"),
+  repos = c(CRAN = "https://cloud.r-project.org",
+            MILESMCBAIN = "https://milesmcbin.r-universe.dev",
+            ROPENSCI = "https://ropensci.r-universe.dev"),
   renv.config.auto.snapshot = FALSE, ## Attempt to keep renv.lock updated automatically
-  renv.config.rspm.enabled = TRUE, ## Use RStudio Package manager for pre-built package binaries
-  renv.config.install.shortcuts = TRUE, ## Use the existing local library to fetch copies of packages for renv
+  renv.config.rspm.enabled = TRUE, ## Use RStudio Package manager for pre-built package binaries for linux
+  renv.config.install.shortcuts = FALSE, ## Use the existing local library to fetch copies of packages for renv
   renv.config.cache.enabled = TRUE   ## Use the renv build cache to speed up install times
 )
 
-# Since RSPM does not provide Mac binaries, always install packages from CRAN
-# on Mac or Windows, and from RSPM on Linux, even if renv.lock specifies otherwise
-if (Sys.info()[["sysname"]] %in% c("Darwin", "Windows")){
-  options(renv.config.repos.override = c(
-    CRAN = "https://cran.rstudio.com/"))
-} else if (Sys.info()[["sysname"]] == "Linux") {
-  options(renv.config.repos.override = c(
-    RSPM = "https://packagemanager.rstudio.com/all/latest"))
-}
+# Set options for internet timeout
+options(timeout = max(300, getOption("timeout")))
+
 source("renv/activate.R")
+load_env() # reload project .env files, after renv/activate.R runs renv::load() which reads user's .renviron
 
 # If project packages have conflicts define them here so as
 # as to manage them across all sessions when building targets
@@ -39,4 +42,10 @@ if(requireNamespace("conflicted", quietly = TRUE)) {
   conflicted::conflict_prefer("select", "dplyr", quiet = TRUE)
   conflicted::conflict_prefer("set_names", "magrittr", quiet = TRUE)
   conflicted::conflict_prefer("View", "utils", quiet = TRUE)
+}
+
+if(interactive()){
+  message(paste("targets project is", Sys.getenv("TAR_PROJECT")))
+  require(targets)
+  require(tidyverse)
 }

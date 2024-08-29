@@ -14,6 +14,7 @@ library(knitr)
 library(rmarkdown)
 library(paws)
 library(conflicted)
+library(containerTemplateUtils) 
 
 ################################################################################
 #
@@ -24,9 +25,5 @@ library(conflicted)
 #
 ################################################################################
 
-library(tflow)
-library(fnmate)
-library(containerTemplateUtils) 
-library(dotenv)
-library(usethis)
-library(kableExtra)
+library(DALEX)
+library(DALEXtra)
