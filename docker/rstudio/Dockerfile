@@ -1,10 +1,16 @@
 FROM rocker/rstudio:latest
 
-# Define build arguments
-ARG USER
-ARG PASSWORD
-
-RUN install2.r --error --skipinstalled --ncpus -1 \
+# Update system and install system dependencies
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
+      libcurl4-openssl-dev \
+      libmkl-rt && \
+    rm -rf /var/lib/apt/lists/* 
+      
+# Install additional R packages
+RUN install2.r --error --skipinstalled --ncpus -1 \ 
+    curl \
     targets \
     tarchetypes \
     tidymodels \
