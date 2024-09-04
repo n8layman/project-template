@@ -5,7 +5,6 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
       libcurl4-openssl-dev \
-      libmkl-rt && \
     rm -rf /var/lib/apt/lists/* 
       
 # Install additional R packages
