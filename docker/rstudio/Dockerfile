@@ -21,7 +21,7 @@ USER ${USERNAME}
 EXPOSE 8787
 
 # Add the entrypoint script and set permissions
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --chown=${USERNAME} entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Use the custom entrypoint script
