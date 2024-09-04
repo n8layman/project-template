@@ -1,4 +1,4 @@
-FROM rocker/rstudio:latest
+FROM rocker/tidyverse:latest
 
 # Update system and install system dependencies
 RUN apt-get update && \
