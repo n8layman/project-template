@@ -22,7 +22,7 @@ jobs:
     - name: Build Docker image
       run: |
         docker build \
-          --build-arg USERNAME=${{ secrets.DOCKER_USERNAME }} \
+          --build-arg RSTUDIO_USER=${{ secrets.RSTUDIO_USER }} \
           --build-arg RSTUDIO_PASSWORD=${{ secrets.RSTUDIO_PASSWORD }} \
           -t ${{ secrets.DOCKER_USERNAME }}/rstudio-server:latest \
           ./docker/rstudio

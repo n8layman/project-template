@@ -1,11 +1,11 @@
 FROM rocker/rstudio:latest
 
 # Define build arguments
-ARG RSTUDIO_USERNAME
+ARG RSTUDIO_USER
 ARG RSTUDIO_PASSWORD
 
 # Set environment variables based on the build arguments
-ENV USER=${RSTUDIO_USERNAME}
+ENV USER=${RSTUDIO_USER}
 ENV PASSWORD=${RSTUDIO_PASSWORD}
 
 RUN install2.r --error --skipinstalled --ncpus -1 \
