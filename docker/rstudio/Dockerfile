@@ -20,10 +20,8 @@ USER ${USERNAME}
 # Expose port 8787 for RStudio Server
 EXPOSE 8787
 
-# Add the entrypoint script
-COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
-
-# Make the script executable
+# Add the entrypoint script and set permissions
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Use the custom entrypoint script
