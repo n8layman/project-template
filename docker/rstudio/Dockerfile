@@ -12,10 +12,10 @@ ENV PASSWORD=${RSTUDIO_PASSWORD}
 RUN useradd -m ${USERNAME}
 
 # Set the working directory to a subdirectory within the user's home directory
-WORKDIR /home/${USERNAME}/projects
+# WORKDIR /home/${USERNAME}/projects
 
 # Switch to the new user
-USER ${USERNAME}
+# USER ${USERNAME}
 
 # Expose port 8787 for RStudio Server
 EXPOSE 8787

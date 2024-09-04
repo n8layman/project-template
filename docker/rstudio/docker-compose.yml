@@ -8,7 +8,7 @@ services:
       - "8787:8787"
     environment:
       - USERNAME=${USERNAME:-rstudio}
-      - RSTUDIO_PASSWORD=${RSTUDIO_PASSWORD}
+      - PASSWORD=${RSTUDIO_PASSWORD}
     volumes:
       - ${PERSISTENT_VOLUME:-~/Documents/projects}:/home/${USERNAME}/projects
     restart: unless-stopped
