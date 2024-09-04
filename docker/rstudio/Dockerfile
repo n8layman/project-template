@@ -4,7 +4,7 @@ FROM rocker/rstudio:latest
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
-      libcurl4-openssl-dev \
+      libcurl4-openssl-dev && \
     rm -rf /var/lib/apt/lists/* 
       
 # Install additional R packages
