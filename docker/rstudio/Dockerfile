@@ -6,7 +6,7 @@ ARG RSTUDIO_PASSWORD
 
 # Set environment variables based on the build arguments
 ENV USERNAME=${USERNAME}
-ENV RSTUDIO_PASSWORD=${RSTUDIO_PASSWORD}
+ENV PASSWORD=${RSTUDIO_PASSWORD}
 
 # Create the user and set the home directory
 RUN useradd -m ${USERNAME}
@@ -20,9 +20,3 @@ USER ${USERNAME}
 # Expose port 8787 for RStudio Server
 EXPOSE 8787
 
-# Add the entrypoint script and set permissions
-COPY --chown=${USERNAME} entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# Use the custom entrypoint script
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
