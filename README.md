@@ -88,18 +88,21 @@ directory
 ## Dockerized RStudio server
 
 A dockerized container is available that provides a pre-configured
-environment with RStudio Server, optimized for machine learning
-workflows. It comes with {targets}, {tarchetypes}, {tidymodels},
-{dbarts}, and {mgcv} pre-installed, enabling users to quickly build,
-tune, and deploy predictive models without the hassle of configuring
-dependencies or installing packages manually. The Dockerfile can be
-built on both `arm64` and `x86` architectures.
+environment with RStudio Server based on
+[rocker/rstudio:latest](https://rocker-project.org/images/versioned/rstudio.html),
+optimized for machine learning workflows. It comes with {targets},
+{tarchetypes}, {tidymodels}, {dbarts}, and {mgcv} pre-installed,
+enabling users to quickly build, tune, and deploy predictive models
+without the hassle of configuring dependencies or installing packages
+manually. The Dockerfile can be built on both `arm64` and `x86`
+architectures.
 
 A pre-built image for `x86` systems is available at
 [n8layman/docker-rstudio](https://hub.docker.com/repository/docker/n8layman/rstudio-server/general).
-More information on how to start up rocker based containers including
-using environment variables to set the container user and the password
-is available at
+This image is automatically built and deployed whenever changes are made
+to the Dockerfile. More information on how to start up rocker based
+containers including using environment variables to set the container
+user and the password is available at
 [rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html).
 An example docker-compose file is also available in the
 [docker/rstudio](docker/rstudio) folder.
