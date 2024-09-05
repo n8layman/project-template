@@ -89,18 +89,19 @@ directory
 
 A dockerized container is available that provides a pre-configured
 environment with RStudio Server, optimized for machine learning
-workflows. It includes the {tidymodels} suite and other essential
-machine learning libraries, enabling users to quickly build, tune, and
-deploy predictive models without the hassle of configuring dependencies
-or installing packages manually. The Dockerfile can be built on both
-`arm` and `x86` architectures.
+workflows. It comes with {targets}, {tarchetypes}, {tidymodels},
+{dbarts}, and {mgcv} pre-installed, enabling users to quickly build,
+tune, and deploy predictive models without the hassle of configuring
+dependencies or installing packages manually. The Dockerfile can be
+built on both `arm64` and `x86` architectures.
 
 A pre-built image for `x86` systems is available at
-`n8layman/docker-rstudio`. For more information on how to start up
-rocker based containers is available at
+[n8layman/docker-rstudio](https://hub.docker.com/repository/docker/n8layman/rstudio-server/general).
+For more information on how to start up rocker based containers is
+available at
 [rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html).
-An example docker-compose file is also available at the
-[docker/rstudio/docker-compose.yml](docker/rstudio/docker-compose.yml).
+An example docker-compose file is also available in the
+[docker/rstudio](docker/rstudio) folder.
 
 ## References
 
