@@ -106,18 +106,12 @@ An example docker-compose file is also available in the
 
 ## References
 
-#### This project uses: [targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
+#### This project uses [targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
 
-#### This project uses:
+#### This project uses [gitflow](https://github.com/nvie/gitflow) to manage project development.
 
-[gitflow](https://github.com/nvie/gitflow) to manage project
-development.
+#### This project uses [git-crypt](https://github.com/AGWA/git-crypt) to encrypt sensitive information such as API keys.
 
-#### This project uses: [git-crypt](https://github.com/AGWA/git-crypt) to encrypt sensitive information such as API keys.
+#### This project used [renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
 
-#### This project used: [renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
-
-#### This project uses:
-
-[rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html)
-based container images.
+#### This project uses [rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html) based container images.
