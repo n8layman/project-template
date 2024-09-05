@@ -18,12 +18,8 @@ for (f in list.files(here::here("R"), full.names = TRUE)) source (f)
 # Containerised R workflow template
 
 <!-- badges: start -->
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![container-workflow-template](https://github.com/ecohealthalliance/container-template/actions/workflows/container-workflow-template.yml/badge.svg)](https://github.com/ecohealthalliance/container-template/actions/workflows/container-workflow-template.yml)
-[![License for Code: MIT](https://img.shields.io/badge/License%20(for%20code)-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![License:
-CC-BY-4.0](https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-blue.svg)](https://creativecommons.org/licenses/by/4.0/)
+
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![container-workflow-template](https://github.com/ecohealthalliance/container-template/actions/workflows/container-workflow-template.yml/badge.svg)](https://github.com/ecohealthalliance/container-template/actions/workflows/container-workflow-template.yml) [![License for Code: MIT](https://img.shields.io/badge/License%20(for%20code)-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![License: CC-BY-4.0](https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-blue.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 <!-- badges: end -->
 
@@ -65,17 +61,26 @@ Some targets are computationally intensive and long-running. The output of these
 
 A hook to prevent users from commiting files greater than GitHub's 100Mb file size limit is available in the `.githooks` folder. To enable this copy the `.githooks/pre-commit` file to the `.git/hooks` directory by running the following command in the terminal within the project base directory
 
-```
+```         
 cp .githooks/pre-commit .git/hooks/pre-commit
 ```
 
+## Dockerized RStudio server
+
+A dockerized container is available that provides a pre-configured environment with RStudio Server, optimized for machine learning workflows. It includes the {tidymodels} suite and other essential machine learning libraries, enabling users to quickly build, tune, and deploy predictive models without the hassle of configuring dependencies or installing packages manually. The Dockerfile can be built on both `arm` and `x86` architectures. 
+
+A pre-built image for `x86` systems is available at `n8layman/docker-rstudio`. For more information on how to start up rocker based containers is available at [rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html). An example docker-compose file is also available at the [docker/rstudio/docker-compose.yml](docker/rstudio/docker-compose.yml).
+
 ## References
 
-#### This project uses [targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
-#### This project uses [gitflow](https://github.com/nvie/gitflow) to manage project development.
-#### This project uses [git-crypt](https://github.com/AGWA/git-crypt) to encrypt sensitive information such as API keys.
-#### This project used [renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
+#### This project uses: [targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
 
+#### This project uses:
+[gitflow](https://github.com/nvie/gitflow) to manage project development.
 
+#### This project uses: [git-crypt](https://github.com/AGWA/git-crypt) to encrypt sensitive information such as API keys.
 
+#### This project used: [renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
 
+#### This project uses:
+[rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html) based container images.

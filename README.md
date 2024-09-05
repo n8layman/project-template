@@ -85,12 +85,37 @@ directory
 
     cp .githooks/pre-commit .git/hooks/pre-commit
 
+## Dockerized RStudio server
+
+A dockerized container is available that provides a pre-configured
+environment with RStudio Server, optimized for machine learning
+workflows. It includes the {tidymodels} suite and other essential
+machine learning libraries, enabling users to quickly build, tune, and
+deploy predictive models without the hassle of configuring dependencies
+or installing packages manually. The Dockerfile can be built on both
+`arm` and `x86` architectures.
+
+A pre-built image for `x86` systems is available at
+`n8layman/docker-rstudio`. For more information on how to start up
+rocker based containers is available at
+[rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html).
+An example docker-compose file is also available at the
+[docker/rstudio/docker-compose.yml](docker/rstudio/docker-compose.yml).
+
 ## References
 
-### This project uses [targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
+#### This project uses: [targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
 
-### This project uses [gitflow](https://github.com/nvie/gitflow) to manage project development.
+#### This project uses:
 
-### This project uses [git-crypt](https://github.com/AGWA/git-crypt) to encrypt sensitive information such as API keys.
+[gitflow](https://github.com/nvie/gitflow) to manage project
+development.
 
-### This project used [renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
+#### This project uses: [git-crypt](https://github.com/AGWA/git-crypt) to encrypt sensitive information such as API keys.
+
+#### This project used: [renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
+
+#### This project uses:
+
+[rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html)
+based container images.

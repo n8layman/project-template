@@ -36,7 +36,8 @@ RUN install2.r --error --skipinstalled --ncpus -1 \
     Rcpp \ 
     RcppEigen \ 
     devtools \
-    remotes
+    remotes \
+    mgcv
 
 RUN mkdir -p ~/.R && \
     echo "CFLAGS += -flax-vector-conversions" >> ~/.R/Makevars && \
