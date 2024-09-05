@@ -97,8 +97,9 @@ built on both `arm64` and `x86` architectures.
 
 A pre-built image for `x86` systems is available at
 [n8layman/docker-rstudio](https://hub.docker.com/repository/docker/n8layman/rstudio-server/general).
-For more information on how to start up rocker based containers is
-available at
+More information on how to start up rocker based containers including
+using environment variables to set the container user and the password
+is available at
 [rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html).
 An example docker-compose file is also available in the
 [docker/rstudio](docker/rstudio) folder.
