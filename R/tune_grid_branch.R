@@ -58,7 +58,7 @@ tune_grid_branch <- function(workflow,
         mutate(id = rsamp$id,
                branch = targets::tar_name(),
                mem_usage_bytes = sum(mem_usage_bytes$bytes, na.rm=T),
-               fit_time = start_time - Sys.time())
+               fit_time = Sys.time() - start_time)
     })
   })
   
