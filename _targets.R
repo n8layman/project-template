@@ -115,8 +115,7 @@ bart_analysis_targets <- tar_plan(
   # curve, which evaluates a model's performance in detecting positive disease 
   # cases. It is especially valuable for imbalanced datasets, as it 
   # highlights how well the model identifies the positive class.
-  tar_target(bart_best_params, select_best_params(bart_tuned, 
-                                                  metric = "roc_auc")),
+  tar_target(bart_best_params, select_best_params(bart_tuned, metric = "roc_auc")),
   
   # Setup the final fit workflow using the best hyper-parameters
   # identified during model tuning.
