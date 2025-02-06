@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages("httr", repos = "https://cloud.r-project.org/")
+          install.packages("httr",  dependencies=TRUE, repos='http://cran.rstudio.com/')
         shell: Rscript {0}
 
       - name: Run sync script
