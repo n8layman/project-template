@@ -31,6 +31,12 @@ tune_grid_branch <- function(workflow,
                                                   precision),
                              verbose = F) {
   
+  
+  # Look into geo_targets
+  # Sample splits how to push them forward as targets branches. Targetize 
+  # For helper that will convert X into Y these are the things that could be in there
+  # For now just did this. Free to implenet. 
+  
   # Get the performance and profiling metrics of every combination of 
   # data fold and hyper-parameter combination passed in to the function
   performance <- map_dfr(1:nrow(training_data_folds), function(i) {
