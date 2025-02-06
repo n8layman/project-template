@@ -15,6 +15,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpoppler-cpp-dev
+
       - name: Install required R packages
         run: |
           Rscript --vanilla -e "install.packages(c('pdftools', 'bibtex'), repos = 'https://cloud.r-project.org', ask = FALSE)"
