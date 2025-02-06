@@ -10,6 +10,8 @@ jobs:
   process-papers:
     runs-on: ubuntu-latest
     container: rocker/tidyverse:4.3.1
+    permissions:
+      contents: write  # 👈 Required for pushing changes
 
     steps:
       - name: Checkout repository
@@ -36,6 +38,10 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
+          
+          # Add authentication to remote URL
+          git remote set-url origin "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          
           git pull --rebase origin main
           git add -A
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update processed papers [skip ci]" && git push)
