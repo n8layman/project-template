@@ -16,10 +16,14 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install required R packages
+        env:
+          RENV_CONFIG_AUTO_RESTORE: "FALSE"  # Disable renv auto-restore
         run: |
           install.packages(c("pdftools", "httr", "stringr", "bibtex"), dependencies=TRUE)
         shell: Rscript {0}
 
       - name: Run R script
+        env:
+          RENV_CONFIG_AUTO_RESTORE: "FALSE"  # Disable renv auto-restore
         run: Rscript scripts/process_papers.R
         shell: Rscript {0}
