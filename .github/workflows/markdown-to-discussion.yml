@@ -11,7 +11,7 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    container: rocker/r-ver:4.3.1  # Use a specific Rocker R version
+    container: rocker/tidyverse:4.3.1  # Use a specific Rocker R version
 
     steps:
       - name: Checkout repository
