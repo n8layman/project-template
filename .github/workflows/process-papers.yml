@@ -17,6 +17,8 @@ jobs:
       - name: Install required R packages
         run: |
           install.packages(c("pdftools", "httr", "stringr", "bibtex"), repos = "https://cloud.r-project.org/")
+        shell: Rscript {0}
 
       - name: Run R script
         run: Rscript scripts/process_papers.R
+        shell: Rscript {0}

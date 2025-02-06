@@ -19,9 +19,11 @@ jobs:
       - name: Install dependencies
         run: |
           install.packages("httr", repos = "https://cloud.r-project.org/")
+        shell: Rscript {0}
 
       - name: Run sync script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           Rscript scripts/sync_markdown_to_discussion.R
+        shell: Rscript {0}
