@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'resources/notes/**'  # Trigger only when Markdown files in resources/notes/ change
+  workflow_dispatch:
 
 jobs:
   sync:
