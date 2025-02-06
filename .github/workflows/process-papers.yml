@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'resources/papers/**'
+  workflow_dispatch:
 
 jobs:
   process-papers:
