@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     container: rocker/tidyverse:4.3.1
     permissions:
-      contents: write  # 👈 Required for pushing changes
+      contents: write  # Required for pushing changes
 
     steps:
       - name: Checkout repository

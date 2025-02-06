@@ -6,7 +6,7 @@ library(bibtex)
 
 # Paths
 PAPERS_DIR <- "resources/papers"
-REFERENCES_FILE <- "resources/references.bib"
+REFERENCES_FILE <- "resources/papers/references.bib"
 
 # Regex to find DOI
 DOI_REGEX <- "\\b10\\.\\d{4,9}/[-._;()/:A-Z0-9]+\\b"
