@@ -9,11 +9,15 @@ on:
 jobs:
   process-papers:
     runs-on: ubuntu-latest
-    container: rocker/tidyverse:4.3.1  # Use a specific Rocker R version
+    container: rocker/tidyverse:4.3.1
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          # Required to persist credentials for pushing changes
+          persist-credentials: true
+          fetch-depth: 0  # Fetch full history (optional, but useful for git operations)
 
       - name: Install system dependencies
         run: |
@@ -27,3 +31,13 @@ jobs:
       - name: Run R script
         run: |
           Rscript --vanilla scripts/process_papers.R
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Commit and push changes
+        run: |
+          git add -A
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update processed papers [skip ci]" && git push)
