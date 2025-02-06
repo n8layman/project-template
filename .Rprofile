@@ -19,8 +19,7 @@ if(!nzchar(Sys.getenv("TAR_PROJECT"))) {
 
 # Set options for renv convenience
 options(
-  repos = c(CRAN = "https://cloud.r-project.org",
-            MILESMCBAIN = "https://milesmcbin.r-universe.dev",
+  repos = c(CRAN = "https://cloud.r-project.org/",
             ROPENSCI = "https://ropensci.r-universe.dev"),
   renv.config.auto.snapshot = FALSE, ## Attempt to keep renv.lock updated automatically
   renv.config.rspm.enabled = TRUE, ## Use RStudio Package manager for pre-built package binaries for linux
