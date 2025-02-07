@@ -42,7 +42,7 @@ jobs:
           
       - name: Run R script
         run: |
-          Rscript --vanilla scripts/process_papers.R
+          Rscript --vanilla R/process_papers.R
 
       - name: Commit and push changes
         run: |

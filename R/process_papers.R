@@ -37,7 +37,7 @@ new_references |> left_join(references) |>
 
 # Write the updated .bib file with a comment header
 comment_header <- sprintf(
-  "%% This file was last updated on %s by the GitHub Actions workflow.\n%% Do not edit manually unless necessary.\n\n",
+  "%% This file was last updated on %s by the `process_papers.yml` GitHub Actions workflow.\n%% Do not edit manually unless necessary.\n\n",
   Sys.time()
 )
 
