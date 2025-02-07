@@ -29,11 +29,7 @@ jobs:
         run: |
           Rscript --vanilla -e "install.packages(c('pdftools', 'bibtex', 'rcrossref', 'bib2df', 'janitor'), repos = 'https://cloud.r-project.org', ask = FALSE)"
 
-      - name: Run R script
-        run: |
-          Rscript --vanilla scripts/process_papers.R
-
-      - name: Commit and push changes
+      - name: Sync repo
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global user.email "actions@github.com"
@@ -43,5 +39,12 @@ jobs:
           git remote set-url origin "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           
           git pull --rebase origin main
+          
+      - name: Run R script
+        run: |
+          Rscript --vanilla scripts/process_papers.R
+
+      - name: Commit and push changes
+        run: |
           git add -A
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update processed papers [skip ci]" && git push)
