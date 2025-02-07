@@ -27,7 +27,7 @@ pdf_files <- list.files(papers_dir, pattern = "\\.pdf$", full.names = TRUE)
 references <- bind_rows(bib2df::bib2df(references_file), 
                         map_dfr(pdf_files, ~extract_doi_from_pdf(.x))) |>
   janitor::remove_empty("cols") |> 
-  distinct()
+  dplyr::distinct()
 
 # Write the updated .bib file with a comment header
 comment_header <- sprintf(
