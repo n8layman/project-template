@@ -5,19 +5,16 @@ library(stringr)
 library(rcrossref)
 library(bib2df)
 
-#zotero R
-
-# Paths
-PAPERS_DIR <- "resources/papers"
-REFERENCES_FILE <- "resources/papers/references.bib"
+papers_dir <- "resources/papers"
+references_file <- "resources/papers/references.bib"
 
 # Regex to find DOI
-DOI_REGEX <- "(?i)\\b10\\.\\d{4,9}/[\\w.:;()/-]+\\b"
+doi_regex <- "(?i)\\b10\\.\\d{4,9}/[\\w.:;()/-]+\\b"
 
 # Function to extract DOI from text
 extract_doi_from_pdf <- function(pdf_file) {
   text <- pdftools::pdf_text(pdf_file)
-  first_match <- str_match(text, DOI_REGEX) |> na.omit() |> pluck(1)
+  first_match <- str_match(text, doi_regex) |> na.omit() |> pluck(1)
   metadata <- cr_cn(dois = first_match, format = "bibentry") |> 
     as_tibble() |> 
     suppressWarnings()
@@ -25,9 +22,9 @@ extract_doi_from_pdf <- function(pdf_file) {
 }
 
 # Main script
-pdf_files <- list.files(PAPERS_DIR, pattern = "\\.pdf$", full.names = TRUE)
+pdf_files <- list.files(papers_dir, pattern = "\\.pdf$", full.names = TRUE)
 
-references <- bind_rows(bib2df::bib2df(REFERENCES_FILE), 
+references <- bind_rows(bib2df::bib2df(references_file), 
                         map_dfr(pdf_files, ~extract_doi_from_pdf(.x))) |>
   janitor::remove_empty("cols") |> 
   distinct()
@@ -38,6 +35,6 @@ comment_header <- sprintf(
   Sys.time()
 )
 
-writeLines(comment_header, REFERENCES_FILE)
+writeLines(comment_header, references_file)
 
-bib2df::df2bib(references, file = REFERENCES_FILE, append = TRUE)
+bib2df::df2bib(references, file = references_file, append = TRUE)
