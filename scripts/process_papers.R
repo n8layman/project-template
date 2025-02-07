@@ -25,8 +25,13 @@ extract_doi_from_pdf <- function(pdf_file) {
 # Main script
 pdf_files <- list.files(papers_dir, pattern = "\\.pdf$", full.names = TRUE)
 
-references <- dplyr::bind_rows(bib2df::bib2df(references_file), 
-                               purrr::map_dfr(pdf_files, ~extract_doi_from_pdf(.x))) |>
+references <- bib2df::bib2df(references_file) %>% setNames(tolower(names(.))) |>
+  mutate_if(is.list, ~paste(unlist(.), collapse = ", ")) |>
+  mutate_all(~as.character(.))
+
+new_references <- purrr::map_dfr(pdf_files, ~extract_doi_from_pdf(.x))
+
+new_references |> left_join(references) |>
   janitor::remove_empty("cols") |> 
   dplyr::distinct()
 
@@ -38,4 +43,4 @@ comment_header <- sprintf(
 
 writeLines(comment_header, references_file)
 
-bib2df::df2bib(references, file = references_file, append = TRUE)
+bib2df::df2bib(new_references, file = references_file, append = TRUE)
