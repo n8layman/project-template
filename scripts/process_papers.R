@@ -4,6 +4,7 @@ library(httr)
 library(stringr)
 library(rcrossref)
 library(bib2df)
+library(dplyr)
 
 papers_dir <- "resources/papers"
 references_file <- "resources/papers/references.bib"
@@ -24,8 +25,8 @@ extract_doi_from_pdf <- function(pdf_file) {
 # Main script
 pdf_files <- list.files(papers_dir, pattern = "\\.pdf$", full.names = TRUE)
 
-references <- bind_rows(bib2df::bib2df(references_file), 
-                        map_dfr(pdf_files, ~extract_doi_from_pdf(.x))) |>
+references <- dplyr::bind_rows(bib2df::bib2df(references_file), 
+                               purrr::map_dfr(pdf_files, ~extract_doi_from_pdf(.x))) |>
   janitor::remove_empty("cols") |> 
   dplyr::distinct()
 
