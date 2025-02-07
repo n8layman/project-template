@@ -4,7 +4,7 @@ library(httr)
 library(stringr)
 library(rcrossref)
 library(bib2df)
-library(dplyr)
+library(tidyverse)
 
 papers_dir <- "resources/papers"
 references_file <- "resources/papers/references.bib"
@@ -15,7 +15,7 @@ doi_regex <- "(?i)\\b10\\.\\d{4,9}/[\\w.:;()/-]+\\b"
 # Function to extract DOI from text
 extract_doi_from_pdf <- function(pdf_file) {
   text <- pdftools::pdf_text(pdf_file)
-  first_match <- str_match(text, doi_regex) |> na.omit() |> pluck(1)
+  first_match <- str_match(text, doi_regex) |> na.omit() |> purrr::pluck(1)
   metadata <- cr_cn(dois = first_match, format = "bibentry") |> 
     as_tibble() |> 
     suppressWarnings()
