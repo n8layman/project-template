@@ -27,7 +27,7 @@ jobs:
 
       - name: Install required R packages
         run: |
-          Rscript --vanilla -e "install.packages(c('pdftools', 'bibtex', 'rcrossref', 'bib2df'), repos = 'https://cloud.r-project.org', ask = FALSE)"
+          Rscript --vanilla -e "install.packages(c('pdftools', 'bibtex', 'rcrossref', 'bib2df', 'janitor'), repos = 'https://cloud.r-project.org', ask = FALSE)"
 
       - name: Run R script
         run: |
