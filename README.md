@@ -105,7 +105,7 @@ containers including using environment variables to set the container
 user and the password is available at
 [rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html).
 An example docker-compose file is also available in the
-[docker/rstudio](docker/rstudio) folder.
+docker/rstudio folder.
 
 ## References
 
