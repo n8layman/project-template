@@ -10,6 +10,7 @@
           // commands to run in sequence
           "r.createRTerm",
           "workbench.action.terminal.moveToEditor",
+          "foam-vscode.open-daily-note",
           "editor.action.copyLinesDownAction"
         ]
       }
