@@ -35,7 +35,7 @@ load_env() # reload project .env files, after renv/activate.R runs renv::load() 
 
 # If project packages have conflicts define them here so as
 # as to manage them across all sessions when building targets
-if(requireNamespace("conflicted", quietly = TRUE)) {
+if (requireNamespace("conflicted", quietly = TRUE)) {
   conflicted::conflict_prefer("filter", "dplyr", quiet = TRUE)
   conflicted::conflict_prefer("count", "dplyr", quiet = TRUE)
   conflicted::conflict_prefer("select", "dplyr", quiet = TRUE)
@@ -43,8 +43,25 @@ if(requireNamespace("conflicted", quietly = TRUE)) {
   conflicted::conflict_prefer("View", "utils", quiet = TRUE)
 }
 
-if(interactive()){
+if (interactive()) {
   message(paste("targets project is", Sys.getenv("TAR_PROJECT")))
   require(targets)
   require(tidyverse)
+}
+
+if (interactive() && Sys.getenv("TERM_PROGRAM") == "vscode") {
+  options(vsc.dev.args = list(
+    width = 1500,
+    height = 1500,
+    pointsize = 12,
+    res = 300
+  ))
+
+  if (requireNamespace("httpgd", quietly = TRUE)) {
+    options(vsc.plot = FALSE)
+    options(device = function(...) {
+      httpgd::hgd(silent = TRUE)
+      .vsc.browser(httpgd::hgd_url(history = FALSE), viewer = "Beside")
+    })
+  }
 }

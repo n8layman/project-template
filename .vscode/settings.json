@@ -23,4 +23,7 @@
     },
     "files.insertFinalNewline": true,
     "markdown.styles": [".vscode/custom-tag-style.css"],
+    "r.bracketedPaste": true,
+    "r.plot.useHttpgd": true,
+    "task.allowAutomaticTasks": "on"
   }
