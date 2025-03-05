@@ -196,6 +196,10 @@ user and the password is available at
 An example docker-compose file is also available in the
 docker/rstudio folder.
 
+## Git-Crypt for Secure Credentials
+
+This project uses git-crypt to securely store sensitive information like API keys and access tokens directly in the repository. With git-crypt, confidential files are automatically encrypted before they're committed to the repository and decrypted after checkout by authorized users. To use git-crypt, you'll need to set it up on your system and be added as a trusted collaborator. After installation, sensitive files (like the `.env` file) specified in `.gitattributes` will be encrypted when committed. This approach eliminates the need for distributing credentials through insecure channels while maintaining the convenience of keeping all project files in one repository. For setup instructions, see the [git-crypt documentation](https://github.com/AGWA/git-crypt).
+
 ## Going Further
 
 This template provides a solid foundation for reproducible research and analysis projects. Here are some suggestions for extending the template based on your project's specific needs:
