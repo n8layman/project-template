@@ -17,7 +17,7 @@ CC-BY-4.0](<https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-blue.s
 
 <!-- badges: end -->
 
-Welcome! This repository is my project pipeline template. I hope it provides some help getting your project started!
+Welcome! My name is Nate and this repository is my project pipeline template. I hope it provides some help getting your project started! For more information about me, please see my [website](https://n8layman.github.io/).
 
 ## Set-up and installation
 
