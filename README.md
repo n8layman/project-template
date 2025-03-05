@@ -1,4 +1,3 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Containerised R workflow template
@@ -12,9 +11,9 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![container-workflow-template](https://github.com/ecohealthalliance/container-template/actions/workflows/container-workflow-template.yml/badge.svg)](https://github.com/ecohealthalliance/container-template/actions/workflows/container-workflow-template.yml)
 [![License for Code:
-MIT](https://img.shields.io/badge/License%20(for%20code)-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+MIT](<https://img.shields.io/badge/License%20(for%20code)-MIT-yellow.svg>)](https://opensource.org/licenses/MIT)
 [![License:
-CC-BY-4.0](https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-blue.svg)](https://creativecommons.org/licenses/by/4.0/)
+CC-BY-4.0](<https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-blue.svg>)](https://creativecommons.org/licenses/by/4.0/)
 
 <!-- badges: end -->
 
@@ -22,16 +21,36 @@ This repository is a project pipeline template
 
 ## Set-up and installation
 
-This pipeline was created using R version 4.3.2 (2023-10-31 ucrt). This
-project uses the {renv} framework to record R package dependencies and
+This pipeline was created using R version 4.4.2 and the {renv} framework to record R package dependencies and
 versions. Packages and versions used are recorded in the `renv.lock`.
 
-- Clone the repository
+- Use this template to create your own project:
+
+  - Option 1: Using GitHub website
+
+    - Visit the template repository at https://github.com/n8layman/project-template
+    - Click the green "Use this template" button and select "Create a new repository"
+    - Fill in your repository name and description
+    - Choose public or private visibility as needed
+    - Click "Create repository from template"
+
+  - Option 2: Using GitHub CLI
+    - Install GitHub CLI if you haven't already (https://cli.github.com/)
+    - Run the following command in your terminal:
+      ```
+      gh repo create my-new-project --template n8layman/project-template --private --clone
+      ```
+    - This will create a private repository called "my-new-project" and clone it to your local machine
+    - Modify the command as needed, changing the repository name and visibility option
+
+- If you didn't use the `--clone` option, clone your new repository:
+
   - In the terminal enter
-    `git clone https://github.com/ecohealthalliance/WABNET-analysis.git`
+    `git clone https://github.com/yourusername/your-repo-name.git`
     in a suitable directory
+
 - Duplicate the R environment used for the analysis:
-  - This project was created using R version 4.3.2. This and other
+  - This project was created using R version 4.4.2. This and other
     versions of R are available on the [R Archive
     Network](https://cloud.r-project.org/)
   - This project uses the {renv} framework to record R package
@@ -42,6 +61,53 @@ versions. Packages and versions used are recorded in the `renv.lock`.
     available in your user / site libraries into the project library
   - Run `renv::restore()` to install any remaining required packages
     into your project library.
+
+## Python Environment with Pixi
+
+This project includes Python-based workflows that use Pixi for environment management. Pixi is a package management and environment tool that ensures reproducible Python environments across different systems.
+
+### Setting up the Python environment
+
+1. **Install Pixi**
+
+   - Follow the installation instructions at [Pixi's official documentation](https://pixi.sh/latest/install/)
+   - In most systems, you can install with: `curl -fsSL https://pixi.sh/install.sh | bash`
+
+2. **Activate the Python environment**
+
+   - Navigate to the project directory
+   - Run `pixi shell` to activate the environment
+   - This loads all Python dependencies specified in the `pixi.toml` file
+
+3. **Available Python modules**
+   - The environment includes commonly used data science packages:
+     - numpy, pandas, scikit-learn, matplotlib
+     - jupyter, ipykernel
+     - Other specialized packages for geospatial analysis and machine learning
+
+### Working with mixed R and Python workflows
+
+- **Integrating R and Python**:
+
+  - Use the {reticulate} package in R to call Python functions
+  - Python scripts in the `py/` directory can be run independently or called from R
+
+- **Environment compatibility**:
+
+  - The Pixi environment is configured to be compatible with the project's Docker container
+  - All Python dependencies are locked in the `pixi.lock` file, ensuring reproducibility
+
+- **Running Python notebooks**:
+  - With the Pixi environment active, use `jupyter notebook` or `jupyter lab` to access interactive notebooks
+  - Notebooks are stored in the `notebooks/` directory
+
+## VSCode Integration
+
+This project is configured to work seamlessly with Visual Studio Code for both R and Python development. Notes for getting that going are available [here](resources/notes/vscode_setup.md)
+
+## Machine Learning with tidymodels
+
+This project uses the {tidymodels} framework for modeling and machine learning workflows. {tidymodels} is a collection of packages for modeling and machine learning using tidyverse principles. More information on {tidymodels} can be found [here](https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/).
 
 ## Targets workflow
 
@@ -73,8 +139,6 @@ DAG unless a flag is set in the `.env` file. A description of these
 flags can be found at the top of the `_targets.R` and in the `.env`
 file.
 
-## Pipeline Overview
-
 ## Misc
 
 A hook to prevent users from commiting files greater than GitHub’s 100Mb
@@ -83,7 +147,9 @@ copy the `.githooks/pre-commit` file to the `.git/hooks` directory by
 running the following command in the terminal within the project base
 directory
 
-    cp .githooks/pre-commit .git/hooks/pre-commit
+```
+cp .githooks/pre-commit .git/hooks/pre-commit
+```
 
 ## Dockerized RStudio server
 
@@ -107,6 +173,31 @@ user and the password is available at
 An example docker-compose file is also available in the
 docker/rstudio folder.
 
+## Going Further
+
+This template provides a solid foundation for reproducible research and analysis projects. Here are some suggestions for extending the template based on your project's specific needs:
+
+### Deployment & Hosting
+
+- **Shiny Applications**: Add deployment configurations for shinyapps.io or Shiny Server
+- **Plumber APIs**: Create RESTful APIs to expose your models
+- **Quarto Publishing**: Set up workflows for publishing interactive documents and dashboards
+- **Static Site Generation**: Configure GitHub Pages for documentation sites
+
+### Advanced CI/CD
+
+- Add GitHub Actions workflows for:
+  - Automated testing of R and Python code
+  - Scheduled data updates
+  - Container building and registry publishing
+  - Automatic documentation updates
+
+### Database Integration
+
+- Set up connections to:
+  - SQL databases with {duckdb} and {dolt}
+  - [{arrow}](https://arrow.apache.org/docs/r/)
+
 ## References
 
 #### This project uses [targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
@@ -117,4 +208,10 @@ docker/rstudio folder.
 
 #### This project used [renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
 
-#### This project uses [rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html) based container images.
+#### This project uses [rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html) based container images
+
+#### This project uses [pixi](https://pixi.sh) to manage Python environments and dependencies
+
+#### This project supports [Visual Studio Code](https://code.visualstudio.com/) for integrated development.
+
+#### This project uses [tidymodels](https://www.tidymodels.org/) for machine learning workflows.
