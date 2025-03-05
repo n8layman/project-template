@@ -13,3 +13,6 @@ _targets/objects
 
 # Exception: Do not ignore .gitkeep files
 !*.gitkeep
+# pixi environments
+.pixi
+*.egg-info

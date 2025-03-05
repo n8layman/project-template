@@ -19,7 +19,8 @@ if(!nzchar(Sys.getenv("TAR_PROJECT"))) {
 
 # Set options for renv convenience
 options(
-  repos = c(CRAN = "https://cloud.r-project.org/",
+  repos = c(CRAN = "https://cloud.r-project.org",
+            MILESMCBAIN = "https://milesmcbin.r-universe.dev",
             ROPENSCI = "https://ropensci.r-universe.dev"),
   renv.config.auto.snapshot = FALSE, ## Attempt to keep renv.lock updated automatically
   renv.config.rspm.enabled = TRUE, ## Use RStudio Package manager for pre-built package binaries for linux
@@ -33,9 +34,10 @@ options(timeout = max(300, getOption("timeout")))
 source("renv/activate.R")
 load_env() # reload project .env files, after renv/activate.R runs renv::load() which reads user's .renviron
 
+
 # If project packages have conflicts define them here so as
 # as to manage them across all sessions when building targets
-if (requireNamespace("conflicted", quietly = TRUE)) {
+if(requireNamespace("conflicted", quietly = TRUE)) {
   conflicted::conflict_prefer("filter", "dplyr", quiet = TRUE)
   conflicted::conflict_prefer("count", "dplyr", quiet = TRUE)
   conflicted::conflict_prefer("select", "dplyr", quiet = TRUE)
@@ -43,13 +45,14 @@ if (requireNamespace("conflicted", quietly = TRUE)) {
   conflicted::conflict_prefer("View", "utils", quiet = TRUE)
 }
 
-if (interactive()) {
+if(interactive()){
   message(paste("targets project is", Sys.getenv("TAR_PROJECT")))
   require(targets)
   require(tidyverse)
 }
 
 if (interactive() && Sys.getenv("TERM_PROGRAM") == "vscode") {
+
   options(vsc.dev.args = list(
     width = 1500,
     height = 1500,

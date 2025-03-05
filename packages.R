@@ -14,7 +14,6 @@ library(knitr)
 library(rmarkdown)
 library(paws)
 library(conflicted)
-library(containerTemplateUtils) 
 
 ################################################################################
 #
@@ -24,6 +23,3 @@ library(containerTemplateUtils)
 #' * Insert code here to load additional R packages that your workflow requires
 #
 ################################################################################
-
-library(DALEX)
-library(DALEXtra)
