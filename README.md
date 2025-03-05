@@ -17,7 +17,7 @@ CC-BY-4.0](<https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-blue.s
 
 <!-- badges: end -->
 
-This repository is a project pipeline template
+Welcome! This repository is my project pipeline template. I hope it provides some help getting your project started!
 
 ## Set-up and installation
 
@@ -62,15 +62,39 @@ versions. Packages and versions used are recorded in the `renv.lock`.
   - Run `renv::restore()` to install any remaining required packages
     into your project library.
 
+## GitHub Actions Integration
+
+This project comes with pre-configured GitHub Actions workflows to automate routine tasks and ensure project quality. GitHub Actions help maintain consistency and reduce manual effort through continuous integration and automation.
+
+### Automatic Bibliography Generation
+
+As an example of how this works, one of the workflows in this template automatically processes academic papers and generates a BibTeX bibliography. When you add PDF papers to the `resources/papers/` directory and push to GitHub, the workflow:
+
+1. Extracts metadata from the PDFs
+2. Searches for DOIs and retrieves complete citation information
+3. Generates/updates a consolidated BibTeX file
+4. Commits the changes back to the repository
+
+This feature is particularly useful for:
+
+- Maintaining an up-to-date references for your project
+- Ensuring consistent citation formatting
+- Making citations immediately available to all team members
+- Enabling easy citation in R Markdown and Quarto documents
+
+\*The workflow uses the `pdftools`, `rcrossref`, and `bibtex` R packages to process papers. You can view the full implementation in `.github/workflows/process-papers.yml` and `R/process_papers.R`.
+
+Here's the resulting bibtex [file](resources/papers/references.bib) generated from one of my [papers](resources/papers/computer_vision.pdf)!
+
 ## Python Environment with Pixi
 
-This project includes Python-based workflows that use Pixi for environment management. Pixi is a package management and environment tool that ensures reproducible Python environments across different systems.
+This project also sets the stage for Python-based workflows that use Pixi for environment management. Pixi is a package management and environment tool that ensures reproducible Python environments across different systems.
 
 ### Setting up the Python environment
 
 1. **Install Pixi**
 
-   - Follow the installation instructions at [Pixi's official documentation](https://pixi.sh/latest/install/)
+   - Follow the installation instructions at [Pixi's official documentation](https://pixi.sh/latest/)
    - In most systems, you can install with: `curl -fsSL https://pixi.sh/install.sh | bash`
 
 2. **Activate the Python environment**
@@ -90,7 +114,6 @@ This project includes Python-based workflows that use Pixi for environment manag
 - **Integrating R and Python**:
 
   - Use the {reticulate} package in R to call Python functions
-  - Python scripts in the `py/` directory can be run independently or called from R
 
 - **Environment compatibility**:
 
