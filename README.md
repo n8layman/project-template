@@ -236,12 +236,12 @@ This template provides a solid foundation for reproducible research and analysis
   - [{arrow}](https://arrow.apache.org/docs/r/)
 
 ## This project uses
-[targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
-[gitflow](https://github.com/nvie/gitflow) to manage project development.
-[renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
-[rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html) based container images
-[pixi](https://pixi.sh) to manage Python environments and dependencies
-[DVC](https://dvc.org/) for Python pipeline management and reproducible workflows
-This project supports [Visual Studio Code](https://code.visualstudio.com/) for integrated development.
-[tidymodels](https://www.tidymodels.org/) for machine learning workflows.
-[act](https://github.com/nektos/act) for local GitHub Actions testing.
+- [targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
+- [gitflow](https://github.com/nvie/gitflow) to manage project development.
+- [renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
+- [rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html) based container images
+- [pixi](https://pixi.sh) to manage Python environments and dependencies
+- [DVC](https://dvc.org/) for Python pipeline management and reproducible workflows
+- This project supports [Visual Studio Code](https://code.visualstudio.com/) for integrated development.
+- [tidymodels](https://www.tidymodels.org/) for machine learning workflows.
+- [act](https://github.com/nektos/act) for local GitHub Actions testing.
