@@ -1,6 +1,7 @@
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 # Data Science Workflow Template
+
 <!-- badges: start -->
+
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
@@ -11,14 +12,17 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 MIT](<https://img.shields.io/badge/License%20(for%20code)-MIT-yellow.svg>)](https://opensource.org/licenses/MIT)
 [![License:
 CC-BY-4.0](<https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-blue.svg>)](https://creativecommons.org/licenses/by/4.0/)
+
 <!-- badges: end -->
 
 ## Security and Collaboration
+
 This template implements a comprehensive security strategy for managing sensitive credentials while enabling safe collaboration with external contributors and clients. The approach uses GitHub repository permissions to create clear boundaries between code access and credential access, enabling different collaboration models for core teams, external contributors, and client stakeholders.
 
 📋 **[Complete Security and Collaboration Plan](docs/security-and-collaboration-plan.md)** - Detailed guide covering access control strategies, GitHub Actions integration, and local development workflows.
 
 ## Set-up and installation
+
 - Use this template to create your own project:
   - Option 1: Using GitHub website
     - Visit the template repository at https://github.com/n8layman/project-template
@@ -42,9 +46,11 @@ This template implements a comprehensive security strategy for managing sensitiv
 ## Common Features
 
 ### Shiny Dashboard Development
+
 This template is configured for developing interactive Shiny dashboards that can be deployed using Shinylive for zero-infrastructure, browser-based execution.
 
 #### Dashboard Features
+
 - **Zero Infrastructure**: Runs entirely in the browser using Shinylive
 - **Easy Sharing**: Simple URL distribution to clients
 - **Automatic Updates**: Deploys on code push via GitHub Actions
@@ -53,6 +59,7 @@ This template is configured for developing interactive Shiny dashboards that can
 - **Secure API Management**: API keys and sensitive credentials stored in GitHub Secrets
 
 #### Development Workflow
+
 1. Build dashboard with reactive components using Shiny
 2. Test locally during development
 3. Push to repository triggers automated deployment
@@ -61,16 +68,20 @@ This template is configured for developing interactive Shiny dashboards that can
 The dashboard runs client-side with no server connection required after initial load, making it perfect for client deliverables.
 
 ### GitHub Actions Integration
+
 This project comes with pre-configured GitHub Actions workflows to automate routine tasks and ensure project quality. GitHub Actions help maintain consistency and reduce manual effort through continuous integration and automation.
 
 #### Automatic Bibliography Generation
+
 As an example of how this works, one of the workflows in this template automatically processes academic papers and generates a BibTeX bibliography. When you add PDF papers to the `resources/papers/` directory and push to GitHub, the workflow:
+
 1. Extracts metadata from the PDFs
 2. Searches for DOIs and retrieves complete citation information
 3. Generates/updates a consolidated BibTeX file
 4. Commits the changes back to the repository
 
 This feature is particularly useful for:
+
 - Maintaining an up-to-date references for your project
 - Ensuring consistent citation formatting
 - Making citations immediately available to all team members
@@ -81,15 +92,19 @@ This feature is particularly useful for:
 Here's the resulting bibtex [file](resources/papers/references.bib) generated from one of my [papers](resources/papers/computer_vision.pdf)!
 
 ### Secure Credential Management
+
 This project uses GitHub Secrets to securely store sensitive information like API keys and access tokens. Secrets are automatically available to GitHub Actions workflows and can be accessed locally using the `act` tool.
 
 #### Setting up GitHub Secrets
+
 1. Navigate to your repository's Settings → Secrets and variables → Actions
 2. Add your API keys and sensitive credentials as repository secrets
 3. Reference them in workflows using `${{ secrets.SECRET_NAME }}`
 
 #### Local Development with Act
+
 For local testing of GitHub Actions workflows that use secrets:
+
 1. **Install Act**: Follow instructions at [nektos/act](https://github.com/nektos/act)
 2. **Create secrets file**: Create `.secrets` file in your project root (add to `.gitignore`)
 3. **Run workflows locally**: `act -s GITHUB_TOKEN=your_token --secret-file .secrets`
@@ -97,11 +112,13 @@ For local testing of GitHub Actions workflows that use secrets:
 This allows you to test your complete pipeline locally before pushing to GitHub, including access to the same secrets used in production.
 
 ### VSCode Integration
+
 This project is configured to work seamlessly with Visual Studio Code for both R and Python development. Notes for getting that going are available [here](resources/notes/vscode_setup.md)
 
 ## R Workflow
 
 ### Environment Setup
+
 This pipeline was created using R version 4.4.2 and the {renv} framework to record R package dependencies and versions. Packages and versions used are recorded in the `renv.lock`.
 
 - Duplicate the R environment used for the analysis:
@@ -118,9 +135,11 @@ This pipeline was created using R version 4.4.2 and the {renv} framework to reco
     into your project library.
 
 ### Machine Learning with tidymodels
+
 This project uses the {tidymodels} framework for modeling and machine learning workflows. {tidymodels} is a collection of packages for modeling and machine learning using tidyverse principles. More information on {tidymodels} can be found [here](https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/).
 
 ### Targets workflow
+
 The project pipeline has been automated using the the {targets} pipeline
 management tool. {Targets} breaks down the analysis into a series of
 discrete, skippable computational steps. Individual steps can be loaded
@@ -130,6 +149,7 @@ component, such as data ingest, is further broken out into its own
 collection of targets as indicated in the `_targets.R` file.
 
 Targets are organized into distinct groups, including:
+
 1.  Data ingest targets
 2.  Data processing targets
 3.  Analysis targets
@@ -138,6 +158,7 @@ Targets are organized into distinct groups, including:
 All targets are defined within the `_targets.R` file.
 
 ### Re-running computationally expensive targets
+
 Some targets are computationally intensive and long-running. The output
 of these targets has been saved in the `\data` folder as compressed RDS
 files. These files end in '.gz' and can be manually accessed using
@@ -148,6 +169,7 @@ flags can be found at the top of the `_targets.R` and in the `.env`
 file.
 
 ### Dockerized RStudio server
+
 A dockerized container is available that provides a pre-configured
 environment with RStudio Server based on
 [rocker/rstudio:latest](https://rocker-project.org/images/versioned/rstudio.html),
@@ -172,9 +194,11 @@ docker/rstudio folder.
 ## Python Workflow
 
 ### Environment Setup with Pixi
+
 This project uses Pixi for environment management. Pixi is a package management and environment tool that ensures reproducible Python environments across different systems.
 
 #### Setting up the Python environment
+
 1. **Install Pixi**
    - Follow the installation instructions at [Pixi's official documentation](https://pixi.sh/latest/)
    - In most systems, you can install with: `curl -fsSL https://pixi.sh/install.sh | bash`
@@ -190,6 +214,7 @@ This project uses Pixi for environment management. Pixi is a package management 
      - Other specialized packages for geospatial analysis and machine learning
 
 ### Python Pipeline Management with DVC
+
 For Python projects, this template uses DVC (Data Version Control) for pipeline management, providing similar functionality to R's {targets} framework:
 
 - **Dependency tracking**: Automatically runs only changed pipeline stages
@@ -199,36 +224,43 @@ For Python projects, this template uses DVC (Data Version Control) for pipeline 
 - **Flexible for epidemiological forecasting**: Supports data ingestion → cleaning → modeling → forecasting → visualization pipelines
 
 ### Working with Python notebooks
+
 - With the Pixi environment active, use `jupyter notebook` or `jupyter lab` to access interactive notebooks
 - Notebooks are stored in the `notebooks/` directory
 - All Python dependencies are locked in the `pixi.lock` file, ensuring reproducibility
 
 ## Mixed R and Python Workflows
+
 - **Integrating R and Python**:
   - Use the {reticulate} package in R to call Python functions
 - **Environment compatibility**:
   - The Pixi environment is configured to be compatible with the project's Docker container
 
 ## Misc
+
 A hook to prevent users from commiting files greater than GitHub's 100Mb
 file size limit is available in the `.githooks` folder. To enable this
 copy the `.githooks/pre-commit` file to the `.git/hooks` directory by
 running the following command in the terminal within the project base
 directory
+
 ```
 cp .githooks/pre-commit .git/hooks/pre-commit
 ```
 
 ## Going Further
+
 This template provides a solid foundation for reproducible research and analysis projects. Here are some suggestions for extending the template based on your project's specific needs:
 
 ### Deployment & Hosting
+
 - **Shiny Applications**: Add deployment configurations for shinyapps.io or Shiny Server
 - **Plumber APIs**: Create RESTful APIs to expose your models
 - **Quarto Publishing**: Set up workflows for publishing interactive documents and dashboards
 - **Static Site Generation**: Configure GitHub Pages for documentation sites
 
 ### Advanced CI/CD
+
 - Add GitHub Actions workflows for:
   - Automated testing of R and Python code
   - Scheduled data updates
@@ -236,11 +268,13 @@ This template provides a solid foundation for reproducible research and analysis
   - Automatic documentation updates
 
 ### Database Integration
+
 - Set up connections to:
   - SQL databases with {duckdb} and {dolt}
   - [{arrow}](https://arrow.apache.org/docs/r/)
 
 ## This project uses
+
 - [targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
 - [gitflow](https://github.com/nvie/gitflow) to manage project development.
 - [renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
