@@ -13,6 +13,11 @@ MIT](<https://img.shields.io/badge/License%20(for%20code)-MIT-yellow.svg>)](http
 CC-BY-4.0](<https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-blue.svg>)](https://creativecommons.org/licenses/by/4.0/)
 <!-- badges: end -->
 
+## Security and Collaboration
+This template implements a comprehensive security strategy for managing sensitive credentials while enabling safe collaboration with external contributors and clients. The approach uses GitHub repository permissions to create clear boundaries between code access and credential access, enabling different collaboration models for core teams, external contributors, and client stakeholders.
+
+📋 **[Complete Security and Collaboration Plan](docs/security-and-collaboration-plan.md)** - Detailed guide covering access control strategies, GitHub Actions integration, and local development workflows.
+
 ## Set-up and installation
 - Use this template to create your own project:
   - Option 1: Using GitHub website
