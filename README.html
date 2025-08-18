@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>readme</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="README_files/libs/clipboard/clipboard.min.js"></script>
+<script src="README_files/libs/quarto-html/quarto.js"></script>
+<script src="README_files/libs/quarto-html/popper.min.js"></script>
+<script src="README_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="README_files/libs/quarto-html/anchor.min.js"></script>
+<link href="README_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="README_files/libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="README_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="README_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="README_files/libs/bootstrap/bootstrap-973236bd072d72a04ee9cd82dcc9cb29.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<section id="containerised-r-workflow-template" class="level1">
+<h1>Containerised R workflow template</h1>
+<!-- badges: start -->
+<p><a href="https://www.repostatus.org/#wip"><img src="https://www.repostatus.org/badges/latest/wip.svg" class="img-fluid" alt="Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public."></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" class="img-fluid" alt="Lifecycle: experimental"></a> <a href="https://github.com/ecohealthalliance/container-template/actions/workflows/container-workflow-template.yml"><img src="https://github.com/ecohealthalliance/container-template/actions/workflows/container-workflow-template.yml/badge.svg" class="img-fluid" alt="container-workflow-template"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License%20(for%20code)-MIT-yellow.svg" class="img-fluid" alt="License for Code: MIT"></a> <a href="https://creativecommons.org/licenses/by/4.0/"><img src="https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-blue.svg" class="img-fluid" alt="License: CC-BY-4.0"></a></p>
+<!-- badges: end -->
+<p>Welcome! My name is Nate and this repository is my project pipeline template. I hope it provides some help getting your project started! For more information about me, please see my <a href="https://n8layman.github.io/">website</a>.</p>
+<section id="set-up-and-installation" class="level2">
+<h2 class="anchored" data-anchor-id="set-up-and-installation">Set-up and installation</h2>
+<p>This pipeline was created using R version 4.4.2 and the {renv} framework to record R package dependencies and versions. Packages and versions used are recorded in the <code>renv.lock</code>.</p>
+<ul>
+<li><p>Use this template to create your own project:</p>
+<ul>
+<li><p>Option 1: Using GitHub website</p>
+<ul>
+<li>Visit the template repository at https://github.com/n8layman/project-template</li>
+<li>Click the green “Use this template” button and select “Create a new repository”</li>
+<li>Fill in your repository name and description</li>
+<li>Choose public or private visibility as needed</li>
+<li>Click “Create repository from template”</li>
+</ul></li>
+<li><p>Option 2: Using GitHub CLI</p>
+<ul>
+<li><p>Install GitHub CLI if you haven’t already (https://cli.github.com/)</p></li>
+<li><p>Run the following command in your terminal:</p>
+<pre><code>gh repo create my-new-project --template n8layman/project-template --private --clone</code></pre></li>
+<li><p>This will create a private repository called “my-new-project” and clone it to your local machine</p></li>
+<li><p>Modify the command as needed, changing the repository name and visibility option</p></li>
+</ul></li>
+</ul></li>
+<li><p>If you didn’t use the <code>--clone</code> option, clone your new repository:</p>
+<ul>
+<li>In the terminal enter <code>git clone https://github.com/yourusername/your-repo-name.git</code> in a suitable directory</li>
+</ul></li>
+<li><p>Duplicate the R environment used for the analysis:</p>
+<ul>
+<li>This project was created using R version 4.4.2. This and other versions of R are available on the <a href="https://cloud.r-project.org/">R Archive Network</a></li>
+<li>This project uses the {renv} framework to record R package dependencies and versions. Packages and versions used are recorded in the <code>renv.lock</code> file.</li>
+<li>To install the {renv} package run <code>install.packages("renv")</code></li>
+<li>Run <code>renv::hydrate()</code> to copy whatever packages are already available in your user / site libraries into the project library</li>
+<li>Run <code>renv::restore()</code> to install any remaining required packages into your project library.</li>
+</ul></li>
+</ul>
+</section>
+<section id="github-actions-integration" class="level2">
+<h2 class="anchored" data-anchor-id="github-actions-integration">GitHub Actions Integration</h2>
+<p>This project comes with pre-configured GitHub Actions workflows to automate routine tasks and ensure project quality. GitHub Actions help maintain consistency and reduce manual effort through continuous integration and automation.</p>
+<section id="automatic-bibliography-generation" class="level3">
+<h3 class="anchored" data-anchor-id="automatic-bibliography-generation">Automatic Bibliography Generation</h3>
+<p>As an example of how this works, one of the workflows in this template automatically processes academic papers and generates a BibTeX bibliography. When you add PDF papers to the <code>resources/papers/</code> directory and push to GitHub, the workflow:</p>
+<ol type="1">
+<li>Extracts metadata from the PDFs</li>
+<li>Searches for DOIs and retrieves complete citation information</li>
+<li>Generates/updates a consolidated BibTeX file</li>
+<li>Commits the changes back to the repository</li>
+</ol>
+<p>This feature is particularly useful for:</p>
+<ul>
+<li>Maintaining an up-to-date references for your project</li>
+<li>Ensuring consistent citation formatting</li>
+<li>Making citations immediately available to all team members</li>
+<li>Enabling easy citation in R Markdown and Quarto documents</li>
+</ul>
+<p>*The workflow uses the <code>pdftools</code>, <code>rcrossref</code>, and <code>bibtex</code> R packages to process papers. You can view the full implementation in <code>.github/workflows/process-papers.yml</code> and <code>R/process_papers.R</code>.</p>
+<p>Here’s the resulting bibtex <a href="resources/papers/references.bib">file</a> generated from one of my <a href="resources/papers/computer_vision.pdf">papers</a>!</p>
+</section>
+</section>
+<section id="python-environment-with-pixi" class="level2">
+<h2 class="anchored" data-anchor-id="python-environment-with-pixi">Python Environment with Pixi</h2>
+<p>This project also sets the stage for Python-based workflows that use Pixi for environment management. Pixi is a package management and environment tool that ensures reproducible Python environments across different systems.</p>
+<section id="setting-up-the-python-environment" class="level3">
+<h3 class="anchored" data-anchor-id="setting-up-the-python-environment">Setting up the Python environment</h3>
+<ol type="1">
+<li><p><strong>Install Pixi</strong></p>
+<ul>
+<li>Follow the installation instructions at <a href="https://pixi.sh/latest/">Pixi’s official documentation</a></li>
+<li>In most systems, you can install with: <code>curl -fsSL https://pixi.sh/install.sh | bash</code></li>
+</ul></li>
+<li><p><strong>Activate the Python environment</strong></p>
+<ul>
+<li>Navigate to the project directory</li>
+<li>Run <code>pixi shell</code> to activate the environment</li>
+<li>This loads all Python dependencies specified in the <code>pixi.toml</code> file</li>
+</ul></li>
+<li><p><strong>Available Python modules</strong></p>
+<ul>
+<li>The environment includes commonly used data science packages:
+<ul>
+<li>numpy, pandas, scikit-learn, matplotlib</li>
+<li>jupyter, ipykernel</li>
+<li>Other specialized packages for geospatial analysis and machine learning</li>
+</ul></li>
+</ul></li>
+</ol>
+</section>
+<section id="working-with-mixed-r-and-python-workflows" class="level3">
+<h3 class="anchored" data-anchor-id="working-with-mixed-r-and-python-workflows">Working with mixed R and Python workflows</h3>
+<ul>
+<li><p><strong>Integrating R and Python</strong>:</p>
+<ul>
+<li>Use the {reticulate} package in R to call Python functions</li>
+</ul></li>
+<li><p><strong>Environment compatibility</strong>:</p>
+<ul>
+<li>The Pixi environment is configured to be compatible with the project’s Docker container</li>
+<li>All Python dependencies are locked in the <code>pixi.lock</code> file, ensuring reproducibility</li>
+</ul></li>
+<li><p><strong>Running Python notebooks</strong>:</p>
+<ul>
+<li>With the Pixi environment active, use <code>jupyter notebook</code> or <code>jupyter lab</code> to access interactive notebooks</li>
+<li>Notebooks are stored in the <code>notebooks/</code> directory</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="vscode-integration" class="level2">
+<h2 class="anchored" data-anchor-id="vscode-integration">VSCode Integration</h2>
+<p>This project is configured to work seamlessly with Visual Studio Code for both R and Python development. Notes for getting that going are available <a href="resources/notes/vscode_setup.md">here</a></p>
+</section>
+<section id="machine-learning-with-tidymodels" class="level2">
+<h2 class="anchored" data-anchor-id="machine-learning-with-tidymodels">Machine Learning with tidymodels</h2>
+<p>This project uses the {tidymodels} framework for modeling and machine learning workflows. {tidymodels} is a collection of packages for modeling and machine learning using tidyverse principles. More information on {tidymodels} can be found <a href="https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/">here</a>.</p>
+</section>
+<section id="targets-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="targets-workflow">Targets workflow</h2>
+<p>The project pipeline has been automated using the the {targets} pipeline management tool. {Targets} breaks down the analysis into a series of discrete, skippable computational steps. Individual steps can be loaded into memory using tar_load(target_name). An overview of the pipeline can be found in the <code>_targets.R</code> file in the main project folder. Each component, such as data ingest, is further broken out into its own collection of targets as indicated in the <code>_targets.R</code> file.</p>
+<p>Targets are organized into distinct groups, including:</p>
+<ol type="1">
+<li>Data ingest targets</li>
+<li>Data processing targets</li>
+<li>Analysis targets</li>
+<li>Output targets</li>
+</ol>
+<p>All targets are defined within the <code>_targets.R</code> file.</p>
+</section>
+<section id="re-running-computationally-expensive-targets" class="level2">
+<h2 class="anchored" data-anchor-id="re-running-computationally-expensive-targets">Re-running computationally expensive targets</h2>
+<p>Some targets are computationally intensive and long-running. The output of these targets has been saved in the <code>\data</code> folder as compressed RDS files. These files end in ‘.gz’ and can be manually accessed using <code>read_rds()</code> or automatically through the targets pipeline. By default these steps will not be re-computed and are disconnected in the pipeline DAG unless a flag is set in the <code>.env</code> file. A description of these flags can be found at the top of the <code>_targets.R</code> and in the <code>.env</code> file.</p>
+</section>
+<section id="misc" class="level2">
+<h2 class="anchored" data-anchor-id="misc">Misc</h2>
+<p>A hook to prevent users from commiting files greater than GitHub’s 100Mb file size limit is available in the <code>.githooks</code> folder. To enable this copy the <code>.githooks/pre-commit</code> file to the <code>.git/hooks</code> directory by running the following command in the terminal within the project base directory</p>
+<pre><code>cp .githooks/pre-commit .git/hooks/pre-commit</code></pre>
+</section>
+<section id="dockerized-rstudio-server" class="level2">
+<h2 class="anchored" data-anchor-id="dockerized-rstudio-server">Dockerized RStudio server</h2>
+<p>A dockerized container is available that provides a pre-configured environment with RStudio Server based on <a href="https://rocker-project.org/images/versioned/rstudio.html">rocker/rstudio:latest</a>, optimized for machine learning workflows. It comes with {targets}, {tarchetypes}, {tidymodels}, {dbarts}, and {mgcv} pre-installed, enabling users to quickly build, tune, and deploy predictive models without the hassle of configuring dependencies or installing packages manually. The Dockerfile can be built on both <code>arm64</code> and <code>x86</code> architectures.</p>
+<p>A pre-built image for <code>x86</code> systems is available at <a href="https://hub.docker.com/repository/docker/n8layman/rstudio-server/general">n8layman/docker-rstudio</a>. This image is automatically built and deployed whenever changes are made to the Dockerfile. More information on how to start up rocker based containers including using environment variables to set the container user and the password is available at <a href="https://rocker-project.org/images/versioned/rstudio.html">rocker-project.org</a>. An example docker-compose file is also available in the docker/rstudio folder.</p>
+</section>
+<section id="git-crypt-for-secure-credentials" class="level2">
+<h2 class="anchored" data-anchor-id="git-crypt-for-secure-credentials">Git-Crypt for Secure Credentials</h2>
+<p>This project uses git-crypt to securely store sensitive information like API keys and access tokens directly in the repository. With git-crypt, confidential files are automatically encrypted before they’re committed to the repository and decrypted after checkout by authorized users. To use git-crypt, you’ll need to set it up on your system and be added as a trusted collaborator. After installation, sensitive files (like the <code>.env</code> file) specified in <code>.gitattributes</code> will be encrypted when committed. This approach eliminates the need for distributing credentials through insecure channels while maintaining the convenience of keeping all project files in one repository. For setup instructions, see the <a href="https://github.com/AGWA/git-crypt">git-crypt documentation</a>.</p>
+</section>
+<section id="going-further" class="level2">
+<h2 class="anchored" data-anchor-id="going-further">Going Further</h2>
+<p>This template provides a solid foundation for reproducible research and analysis projects. Here are some suggestions for extending the template based on your project’s specific needs:</p>
+<section id="deployment-hosting" class="level3">
+<h3 class="anchored" data-anchor-id="deployment-hosting">Deployment &amp; Hosting</h3>
+<ul>
+<li><strong>Shiny Applications</strong>: Add deployment configurations for shinyapps.io or Shiny Server</li>
+<li><strong>Plumber APIs</strong>: Create RESTful APIs to expose your models</li>
+<li><strong>Quarto Publishing</strong>: Set up workflows for publishing interactive documents and dashboards</li>
+<li><strong>Static Site Generation</strong>: Configure GitHub Pages for documentation sites</li>
+</ul>
+</section>
+<section id="advanced-cicd" class="level3">
+<h3 class="anchored" data-anchor-id="advanced-cicd">Advanced CI/CD</h3>
+<ul>
+<li>Add GitHub Actions workflows for:
+<ul>
+<li>Automated testing of R and Python code</li>
+<li>Scheduled data updates</li>
+<li>Container building and registry publishing</li>
+<li>Automatic documentation updates</li>
+</ul></li>
+</ul>
+</section>
+<section id="database-integration" class="level3">
+<h3 class="anchored" data-anchor-id="database-integration">Database Integration</h3>
+<ul>
+<li>Set up connections to:
+<ul>
+<li>SQL databases with {duckdb} and {dolt}</li>
+<li><a href="https://arrow.apache.org/docs/r/">{arrow}</a></li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<section id="this-project-uses-targets-to-ensure-that-the-analysis-is-reproducible." class="level4">
+<h4 class="anchored" data-anchor-id="this-project-uses-targets-to-ensure-that-the-analysis-is-reproducible.">This project uses <a href="https://books.ropensci.org/targets/">targets</a> to ensure that the analysis is reproducible.</h4>
+</section>
+<section id="this-project-uses-gitflow-to-manage-project-development." class="level4">
+<h4 class="anchored" data-anchor-id="this-project-uses-gitflow-to-manage-project-development.">This project uses <a href="https://github.com/nvie/gitflow">gitflow</a> to manage project development.</h4>
+</section>
+<section id="this-project-uses-git-crypt-to-encrypt-sensitive-information-such-as-api-keys." class="level4">
+<h4 class="anchored" data-anchor-id="this-project-uses-git-crypt-to-encrypt-sensitive-information-such-as-api-keys.">This project uses <a href="https://github.com/AGWA/git-crypt">git-crypt</a> to encrypt sensitive information such as API keys.</h4>
+</section>
+<section id="this-project-used-renv-to-manage-the-analysis-environment-and-package-versions" class="level4">
+<h4 class="anchored" data-anchor-id="this-project-used-renv-to-manage-the-analysis-environment-and-package-versions">This project used <a href="https://rstudio.github.io/renv/articles/renv.html">renv</a> to manage the analysis environment and package versions</h4>
+</section>
+<section id="this-project-uses-rocker-project.org-based-container-images" class="level4">
+<h4 class="anchored" data-anchor-id="this-project-uses-rocker-project.org-based-container-images">This project uses <a href="https://rocker-project.org/images/versioned/rstudio.html">rocker-project.org</a> based container images</h4>
+</section>
+<section id="this-project-uses-pixi-to-manage-python-environments-and-dependencies" class="level4">
+<h4 class="anchored" data-anchor-id="this-project-uses-pixi-to-manage-python-environments-and-dependencies">This project uses <a href="https://pixi.sh">pixi</a> to manage Python environments and dependencies</h4>
+</section>
+<section id="this-project-supports-visual-studio-code-for-integrated-development." class="level4">
+<h4 class="anchored" data-anchor-id="this-project-supports-visual-studio-code-for-integrated-development.">This project supports <a href="https://code.visualstudio.com/">Visual Studio Code</a> for integrated development.</h4>
+</section>
+<section id="this-project-uses-tidymodels-for-machine-learning-workflows." class="level4">
+<h4 class="anchored" data-anchor-id="this-project-uses-tidymodels-for-machine-learning-workflows.">This project uses <a href="https://www.tidymodels.org/">tidymodels</a> for machine learning workflows.</h4>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
