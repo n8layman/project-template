@@ -235,13 +235,13 @@ This template provides a solid foundation for reproducible research and analysis
   - SQL databases with {duckdb} and {dolt}
   - [{arrow}](https://arrow.apache.org/docs/r/)
 
-## References
-#### This project uses [targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
-#### This project uses [gitflow](https://github.com/nvie/gitflow) to manage project development.
-#### This project used [renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
-#### This project uses [rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html) based container images
-#### This project uses [pixi](https://pixi.sh) to manage Python environments and dependencies
-#### This project uses [DVC](https://dvc.org/) for Python pipeline management and reproducible workflows
-#### This project supports [Visual Studio Code](https://code.visualstudio.com/) for integrated development.
-#### This project uses [tidymodels](https://www.tidymodels.org/) for machine learning workflows.
-#### This project uses [act](https://github.com/nektos/act) for local GitHub Actions testing.
+## This project uses
+[targets](https://books.ropensci.org/targets/) to ensure that the analysis is reproducible.
+[gitflow](https://github.com/nvie/gitflow) to manage project development.
+[renv](https://rstudio.github.io/renv/articles/renv.html) to manage the analysis environment and package versions
+[rocker-project.org](https://rocker-project.org/images/versioned/rstudio.html) based container images
+[pixi](https://pixi.sh) to manage Python environments and dependencies
+[DVC](https://dvc.org/) for Python pipeline management and reproducible workflows
+This project supports [Visual Studio Code](https://code.visualstudio.com/) for integrated development.
+[tidymodels](https://www.tidymodels.org/) for machine learning workflows.
+[act](https://github.com/nektos/act) for local GitHub Actions testing.
