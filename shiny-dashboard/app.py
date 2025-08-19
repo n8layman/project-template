@@ -1,19 +1,15 @@
-# Shinylive Dashboard Template
+# Shinylive Dashboard Template - Python Version
 # A comprehensive 4-tab dashboard template for data science projects
 
 from shiny import App, render, ui, reactive
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from datetime import datetime, timedelta
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
+from datetime import datetime, timedelta
 
-# Set style for matplotlib
-plt.style.use('seaborn-v0_8')
-sns.set_palette("husl")
+# Set global options for consistent styling
+pd.set_option('display.float_format', '{:.1f}'.format)
 
 # Generate sample data for the dashboard
 def generate_sample_data():
@@ -28,20 +24,22 @@ def generate_sample_data():
     base_trend = np.linspace(100, 150, n_days)
     seasonal = 20 * np.sin(2 * np.pi * np.arange(n_days) / 365.25)
     noise = np.random.normal(0, 10, n_days)
-    cases = np.maximum(0, base_trend + seasonal + noise).astype(int)
+    cases = np.maximum(0, np.round(base_trend + seasonal + noise)).astype(int)
     
     # Add some outbreak events
     outbreak_days = np.random.choice(n_days, 5, replace=False)
     for day in outbreak_days:
-        cases[day:day+14] += np.random.poisson(30, min(14, n_days-day))
+        end_day = min(day + 14, n_days)
+        outbreak_cases = np.random.poisson(30, end_day - day)
+        cases[day:end_day] += outbreak_cases
     
     time_series_data = pd.DataFrame({
         'date': dates,
         'cases': cases,
-        'deaths': np.random.poisson(cases * 0.02),
-        'hospitalizations': np.random.poisson(cases * 0.1),
-        'tests': np.random.poisson(cases * 5),
-        'positivity_rate': np.clip(cases / (cases * 5) * 100, 1, 25)
+        'deaths': np.random.poisson(np.maximum(1, cases * 0.02)),
+        'hospitalizations': np.random.poisson(np.maximum(1, cases * 0.1)),
+        'tests': np.random.poisson(np.maximum(1, cases * 5)),
+        'positivity_rate': np.clip(cases / np.maximum(1, cases * 5) * 100, 1, 25)
     })
     
     # Regional data
@@ -61,7 +59,7 @@ def generate_sample_data():
     # Age group data
     age_groups = ['0-17', '18-34', '35-49', '50-64', '65+']
     age_data = pd.DataFrame({
-        'age_group': age_groups,
+        'age_group': pd.Categorical(age_groups, categories=age_groups, ordered=True),
         'cases': np.random.poisson([800, 1200, 1000, 900, 600]),
         'deaths': np.random.poisson([5, 15, 25, 40, 120]),
         'vaccinated': np.random.uniform([40, 70, 75, 80, 90], [60, 85, 90, 95, 98])
@@ -90,7 +88,12 @@ app_ui = ui.page_navbar(
                 ui.input_select(
                     "metric",
                     "Primary Metric:",
-                    choices=["cases", "deaths", "hospitalizations", "positivity_rate"],
+                    choices={
+                        "cases": "Cases", 
+                        "deaths": "Deaths", 
+                        "hospitalizations": "Hospitalizations", 
+                        "positivity_rate": "Positivity Rate"
+                    },
                     selected="cases"
                 ),
                 ui.br(),
@@ -98,25 +101,23 @@ app_ui = ui.page_navbar(
                 ui.output_ui("key_stats"),
                 width=300
             ),
-            ui.main_panel(
-                ui.h2("Data Science Dashboard Template"),
-                ui.p("This dashboard demonstrates common patterns for data science deliverables, "
-                     "including time series visualization, regional comparisons, and demographic analysis."),
-                ui.layout_column_wrap(
-                    ui.card(
-                        ui.card_header("📈 Trend Analysis"),
-                        ui.output_plot("trend_plot"),
-                    ),
-                    ui.card(
-                        ui.card_header("🎯 Recent Performance"),
-                        ui.output_plot("recent_performance"),
-                    ),
-                    width=1/2
+            ui.h2("Data Science Dashboard Template"),
+            ui.p("This dashboard demonstrates common patterns for data science deliverables, "
+                 "including time series visualization, regional comparisons, and demographic analysis."),
+            ui.layout_column_wrap(
+                ui.card(
+                    ui.card_header("📈 Trend Analysis"),
+                    ui.output_plot("trend_plot"),
                 ),
                 ui.card(
-                    ui.card_header("📋 Data Summary"),
-                    ui.output_data_frame("summary_table")
-                )
+                    ui.card_header("🎯 Recent Performance"),
+                    ui.output_plot("recent_performance"),
+                ),
+                width=1/2
+            ),
+            ui.card(
+                ui.card_header("📋 Data Summary"),
+                ui.output_data_frame("summary_table")
             )
         )
     ),
@@ -144,6 +145,7 @@ app_ui = ui.page_navbar(
         "👥 Demographics",
         ui.layout_sidebar(
             ui.sidebar(
+                ui.h4("Display Options"),
                 ui.input_radio_buttons(
                     "demo_metric",
                     "Select Metric:",
@@ -161,22 +163,20 @@ app_ui = ui.page_navbar(
                 ),
                 width=250
             ),
-            ui.main_panel(
-                ui.layout_column_wrap(
-                    ui.card(
-                        ui.card_header("Age Group Distribution"),
-                        ui.output_plot("age_distribution"),
-                    ),
-                    ui.card(
-                        ui.card_header("Age Group Comparison"),
-                        ui.output_plot("age_comparison"),
-                    ),
-                    width=1/2
+            ui.layout_column_wrap(
+                ui.card(
+                    ui.card_header("Age Group Distribution"),
+                    ui.output_plot("age_distribution"),
                 ),
                 ui.card(
-                    ui.card_header("Demographic Summary"),
-                    ui.output_data_frame("demo_table")
-                )
+                    ui.card_header("Age Group Comparison"),
+                    ui.output_plot("age_comparison"),
+                ),
+                width=1/2
+            ),
+            ui.card(
+                ui.card_header("Demographic Summary"),
+                ui.output_data_frame("demo_table")
             )
         )
     ),
@@ -185,6 +185,7 @@ app_ui = ui.page_navbar(
         "📈 Forecasting",
         ui.layout_sidebar(
             ui.sidebar(
+                ui.h4("Forecast Parameters"),
                 ui.input_slider(
                     "forecast_days",
                     "Forecast Period (days):",
@@ -196,7 +197,11 @@ app_ui = ui.page_navbar(
                 ui.input_select(
                     "forecast_metric",
                     "Forecast Metric:",
-                    choices=["cases", "deaths", "hospitalizations"],
+                    choices={
+                        "cases": "Cases", 
+                        "deaths": "Deaths", 
+                        "hospitalizations": "Hospitalizations"
+                    },
                     selected="cases"
                 ),
                 ui.input_slider(
@@ -214,25 +219,25 @@ app_ui = ui.page_navbar(
                      "Production models would use more sophisticated methods."),
                 width=280
             ),
-            ui.main_panel(
+            ui.card(
+                ui.card_header("📊 Forecast Visualization"),
+                ui.output_plot("forecast_plot"),
+            ),
+            ui.layout_column_wrap(
                 ui.card(
-                    ui.card_header("📊 Forecast Visualization"),
-                    ui.output_plot("forecast_plot"),
+                    ui.card_header("🎯 Forecast Summary"),
+                    ui.output_ui("forecast_summary"),
                 ),
-                ui.layout_column_wrap(
-                    ui.card(
-                        ui.card_header("🎯 Forecast Summary"),
-                        ui.output_ui("forecast_summary"),
-                    ),
-                    ui.card(
-                        ui.card_header("⚠️ Model Assumptions"),
-                        ui.p("• Linear trend continuation"),
-                        ui.p("• Historical variance patterns"),
-                        ui.p("• No external intervention effects"),
-                        ui.p("• Seasonal patterns maintained"),
-                    ),
-                    width=1/2
-                )
+                ui.card(
+                    ui.card_header("⚠️ Model Assumptions"),
+                    ui.tags.ul(
+                        ui.tags.li("Linear trend continuation"),
+                        ui.tags.li("Historical variance patterns"),
+                        ui.tags.li("No external intervention effects"),
+                        ui.tags.li("Seasonal patterns maintained")
+                    )
+                ),
+                width=1/2
             )
         )
     ),
@@ -260,12 +265,16 @@ def server(input, output, session):
         data = filtered_data()
         metric = input.metric()
         
-        total = data[metric].sum() if metric != 'positivity_rate' else data[metric].mean()
+        if metric == 'positivity_rate':
+            total = f"{data[metric].mean():.1f}%"
+        else:
+            total = f"{data[metric].sum():,.0f}"
+        
         recent = data[metric].tail(7).mean()
         trend = "↗️" if recent > data[metric].head(7).mean() else "↘️"
         
         return ui.div(
-            ui.p(f"Total: {total:,.1f}"),
+            ui.p(f"Total: {total}"),
             ui.p(f"7-day avg: {recent:.1f} {trend}"),
             ui.p(f"Days: {len(data)}")
         )
@@ -276,21 +285,38 @@ def server(input, output, session):
         data = filtered_data()
         metric = input.metric()
         
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.plot(data['date'], data[metric], linewidth=2, alpha=0.8)
-        
-        # Add 7-day rolling average
+        # Calculate 7-day rolling average
         rolling_avg = data[metric].rolling(window=7, center=True).mean()
-        ax.plot(data['date'], rolling_avg, linewidth=3, alpha=0.7, 
-                label='7-day average', color='red')
         
-        ax.set_title(f'{metric.replace("_", " ").title()} Over Time')
-        ax.set_xlabel('Date')
-        ax.set_ylabel(metric.replace("_", " ").title())
-        ax.legend()
-        ax.grid(True, alpha=0.3)
-        plt.xticks(rotation=45)
-        plt.tight_layout()
+        fig = go.Figure()
+        
+        # Add main trend line
+        fig.add_trace(go.Scatter(
+            x=data['date'], 
+            y=data[metric],
+            mode='lines',
+            name=metric.replace('_', ' ').title(),
+            line=dict(color='steelblue', width=2),
+            opacity=0.6
+        ))
+        
+        # Add rolling average
+        fig.add_trace(go.Scatter(
+            x=data['date'], 
+            y=rolling_avg,
+            mode='lines',
+            name='7-day Average',
+            line=dict(color='red', width=3),
+            opacity=0.8
+        ))
+        
+        fig.update_layout(
+            title=f'{metric.replace("_", " ").title()} Over Time',
+            xaxis_title="Date",
+            yaxis_title=metric.replace("_", " ").title(),
+            hovermode='x unified'
+        )
+        
         return fig
     
     @render.plot
@@ -298,25 +324,27 @@ def server(input, output, session):
         """Recent performance metrics"""
         data = filtered_data().tail(30)  # Last 30 days
         
-        fig, ax = plt.subplots(figsize=(8, 6))
+        metrics = ['Cases', 'Deaths', 'Hospitalizations']
+        values = [
+            data['cases'].mean(),
+            data['deaths'].mean(),
+            data['hospitalizations'].mean()
+        ]
         
-        # Create a simple performance indicator
-        metrics = ['cases', 'deaths', 'hospitalizations']
-        values = [data[m].mean() for m in metrics]
-        colors = plt.cm.viridis(np.linspace(0, 1, len(metrics)))
+        fig = go.Figure(data=[
+            go.Bar(x=metrics, y=values, 
+                   text=[f'{v:.1f}' for v in values],
+                   textposition='outside',
+                   marker_color=['#1f77b4', '#ff7f0e', '#2ca02c'])
+        ])
         
-        bars = ax.bar(metrics, values, color=colors, alpha=0.7)
+        fig.update_layout(
+            title='30-Day Average Metrics',
+            xaxis_title='Metric',
+            yaxis_title='Average Daily Count',
+            showlegend=False
+        )
         
-        # Add value labels on bars
-        for bar, value in zip(bars, values):
-            height = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width()/2., height,
-                   f'{value:.1f}', ha='center', va='bottom')
-        
-        ax.set_title('30-Day Average Metrics')
-        ax.set_ylabel('Average Daily Count')
-        plt.xticks(rotation=45)
-        plt.tight_layout()
         return fig
     
     @render.data_frame
@@ -351,49 +379,53 @@ def server(input, output, session):
     @render.plot
     def regional_cases_plot():
         """Regional case rates visualization"""
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig = go.Figure(data=[
+            go.Bar(x=regional_data['region'], 
+                   y=regional_data['case_rate'],
+                   text=regional_data['case_rate'].round(1),
+                   textposition='outside',
+                   marker_color=px.colors.qualitative.Set3[:len(regional_data)])
+        ])
         
-        bars = ax.bar(regional_data['region'], regional_data['case_rate'], 
-                     color=plt.cm.Set3(range(len(regional_data))))
+        fig.update_layout(
+            title='Case Rates by Region (per 100K population)',
+            xaxis_title='Region',
+            yaxis_title='Cases per 100K',
+            showlegend=False
+        )
         
-        # Add value labels
-        for bar, value in zip(bars, regional_data['case_rate']):
-            height = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width()/2., height,
-                   f'{value:.1f}', ha='center', va='bottom')
-        
-        ax.set_title('Case Rates by Region (per 100K population)')
-        ax.set_xlabel('Region')
-        ax.set_ylabel('Cases per 100K')
-        ax.grid(True, alpha=0.3, axis='y')
-        plt.tight_layout()
         return fig
     
     @render.plot
     def vax_capacity_plot():
         """Vaccination vs hospital capacity scatter plot"""
-        fig, ax = plt.subplots(figsize=(8, 6))
+        fig = go.Figure(data=go.Scatter(
+            x=regional_data['vaccination_rate'],
+            y=regional_data['hospital_capacity'],
+            mode='markers',
+            marker=dict(
+                size=regional_data['total_cases']/50,
+                color=regional_data['case_rate'],
+                colorscale='Viridis',
+                showscale=True,
+                colorbar=dict(title="Case Rate")
+            ),
+            text=regional_data['region'],
+            hovertemplate=(
+                "Region: %{text}<br>" +
+                "Vaccination Rate: %{x:.1f}%<br>" +
+                "Hospital Capacity: %{y:.1f}%<br>" +
+                "Total Cases: %{marker.size}<br>" +
+                "Case Rate: %{marker.color:.1f}<extra></extra>"
+            )
+        ))
         
-        scatter = ax.scatter(regional_data['vaccination_rate'], 
-                           regional_data['hospital_capacity'],
-                           s=regional_data['total_cases']/50,  # Size by cases
-                           c=regional_data['case_rate'],
-                           cmap='RdYlBu_r',
-                           alpha=0.7)
+        fig.update_layout(
+            title='Vaccination Rate vs Hospital Capacity<br><sub>Size = Total Cases, Color = Case Rate</sub>',
+            xaxis_title='Vaccination Rate (%)',
+            yaxis_title='Hospital Capacity (%)'
+        )
         
-        # Add region labels
-        for i, region in enumerate(regional_data['region']):
-            ax.annotate(region, 
-                       (regional_data['vaccination_rate'].iloc[i], 
-                        regional_data['hospital_capacity'].iloc[i]),
-                       xytext=(5, 5), textcoords='offset points')
-        
-        ax.set_xlabel('Vaccination Rate (%)')
-        ax.set_ylabel('Hospital Capacity (%)')
-        ax.set_title('Vaccination Rate vs Hospital Capacity\n(Size = Total Cases, Color = Case Rate)')
-        
-        plt.colorbar(scatter, label='Case Rate (per 100K)')
-        plt.tight_layout()
         return fig
     
     @render.data_frame
@@ -413,61 +445,79 @@ def server(input, output, session):
         metric = input.demo_metric()
         show_pct = input.show_percentages()
         
-        fig, ax = plt.subplots(figsize=(8, 6))
-        
         values = age_data[metric].values
-        if show_pct and metric != 'vaccinated':
+        
+        if show_pct and metric != "vaccinated":
             values = values / values.sum() * 100
             ylabel = f'{metric.title()} (%)'
         else:
-            ylabel = metric.replace('_', ' ').title()
-            if metric == 'vaccinated':
-                ylabel += ' (%)'
+            ylabel = metric.title()
+            if metric == "vaccinated":
+                ylabel += " (%)"
         
-        colors = plt.cm.plasma(np.linspace(0, 1, len(age_data)))
-        bars = ax.bar(age_data['age_group'], values, color=colors, alpha=0.8)
+        text_values = [f'{v:.1f}{"%" if show_pct or metric == "vaccinated" else ""}' 
+                      for v in values]
         
-        # Add value labels
-        for bar, value in zip(bars, values):
-            height = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width()/2., height,
-                   f'{value:.1f}{"%" if show_pct or metric == "vaccinated" else ""}',
-                   ha='center', va='bottom')
+        fig = go.Figure(data=[
+            go.Bar(x=age_data['age_group'], 
+                   y=values,
+                   text=text_values,
+                   textposition='outside',
+                   marker_color=px.colors.sequential.Plasma[:len(age_data)])
+        ])
         
-        ax.set_title(f'{metric.replace("_", " ").title()} by Age Group')
-        ax.set_xlabel('Age Group')
-        ax.set_ylabel(ylabel)
-        ax.grid(True, alpha=0.3, axis='y')
-        plt.tight_layout()
+        fig.update_layout(
+            title=f'{metric.replace("_", " ").title()} by Age Group',
+            xaxis_title='Age Group',
+            yaxis_title=ylabel,
+            showlegend=False
+        )
+        
         return fig
     
     @render.plot
     def age_comparison():
         """Age group comparison radar/polar plot"""
-        fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(projection='polar'))
-        
         # Normalize all metrics to 0-1 scale for comparison
-        metrics = ['cases', 'deaths', 'vaccinated']
-        angles = np.linspace(0, 2 * np.pi, len(age_data), endpoint=False)
+        norm_data = age_data.copy()
+        for col in ['cases', 'deaths', 'vaccinated']:
+            norm_data[f'{col}_norm'] = ((norm_data[col] - norm_data[col].min()) / 
+                                      (norm_data[col].max() - norm_data[col].min()))
         
-        for i, metric in enumerate(metrics):
-            values = age_data[metric].values
-            normalized_values = (values - values.min()) / (values.max() - values.min())
-            
-            # Close the plot
-            angles_plot = np.concatenate((angles, [angles[0]]))
-            values_plot = np.concatenate((normalized_values, [normalized_values[0]]))
-            
-            ax.plot(angles_plot, values_plot, 'o-', linewidth=2, 
-                   label=metric.replace('_', ' ').title(), alpha=0.7)
-            ax.fill(angles_plot, values_plot, alpha=0.1)
+        # Create radar chart using scatterpolar
+        fig = go.Figure()
         
-        ax.set_xticks(angles)
-        ax.set_xticklabels(age_data['age_group'])
-        ax.set_ylim(0, 1)
-        ax.set_title('Age Group Comparison\n(Normalized Values)', y=1.08)
-        ax.legend(loc='upper right', bbox_to_anchor=(0.1, 0.1))
-        plt.tight_layout()
+        # Add traces for each metric
+        metrics = [
+            ('cases_norm', 'Cases', 'blue'),
+            ('deaths_norm', 'Deaths', 'red'),
+            ('vaccinated_norm', 'Vaccinated', 'green')
+        ]
+        
+        for metric, name, color in metrics:
+            # Close the plot by adding first value at the end
+            values = list(norm_data[metric]) + [norm_data[metric].iloc[0]]
+            categories = list(norm_data['age_group']) + [norm_data['age_group'].iloc[0]]
+            
+            fig.add_trace(go.Scatterpolar(
+                r=values,
+                theta=categories,
+                fill='toself',
+                fillcolor=f'rgba({{"blue": "0,0,255", "red": "255,0,0", "green": "0,255,0"}}[color],0.1)',
+                name=name,
+                line=dict(color=color)
+            ))
+        
+        fig.update_layout(
+            polar=dict(
+                radialaxis=dict(
+                    visible=True,
+                    range=[0, 1]
+                )),
+            title='Age Group Comparison<br><sub>Normalized Values</sub>',
+            legend=dict(orientation="h", x=0.5, xanchor='center')
+        )
+        
         return fig
     
     @render.data_frame
@@ -496,17 +546,17 @@ def server(input, output, session):
         y = recent_data[metric].values
         
         # Fit linear trend
-        z = np.polyfit(x, y, 1)
-        trend = np.poly1d(z)
+        coeffs = np.polyfit(x, y, 1)
+        trend_line = np.poly1d(coeffs)
         
         # Generate forecast
         forecast_x = np.arange(len(recent_data), len(recent_data) + forecast_days)
-        forecast_y = trend(forecast_x)
+        forecast_y = trend_line(forecast_x)
         
         # Add uncertainty (simple approach)
-        residuals = y - trend(x)
+        residuals = y - trend_line(x)
         std_error = np.std(residuals)
-        z_score = 1.96 if confidence == 95 else (2.58 if confidence == 99 else 1.64)
+        z_score = {95: 1.96, 99: 2.58, 80: 1.64, 85: 1.44, 90: 1.64}[confidence]
         
         upper_bound = forecast_y + z_score * std_error
         lower_bound = np.maximum(0, forecast_y - z_score * std_error)
@@ -516,31 +566,51 @@ def server(input, output, session):
         forecast_dates = pd.date_range(start=last_date + timedelta(days=1), 
                                      periods=forecast_days, freq='D')
         
-        # Plot
-        fig, ax = plt.subplots(figsize=(12, 7))
+        # Create the plot
+        fig = go.Figure()
         
         # Historical data
-        ax.plot(recent_data['date'], recent_data[metric], 
-               label='Historical', linewidth=2, color='blue')
+        fig.add_trace(go.Scatter(
+            x=recent_data['date'], 
+            y=recent_data[metric],
+            mode='lines',
+            name='Historical',
+            line=dict(color='blue', width=2)
+        ))
         
-        # Forecast
-        ax.plot(forecast_dates, forecast_y, 
-               label='Forecast', linewidth=2, color='red', linestyle='--')
+        # Forecast line
+        fig.add_trace(go.Scatter(
+            x=forecast_dates, 
+            y=forecast_y,
+            mode='lines',
+            name='Forecast',
+            line=dict(color='red', width=2, dash='dash')
+        ))
         
         # Confidence interval
-        ax.fill_between(forecast_dates, lower_bound, upper_bound, 
-                       alpha=0.3, color='red', label=f'{confidence}% Confidence Interval')
+        fig.add_trace(go.Scatter(
+            x=list(forecast_dates) + list(forecast_dates[::-1]),
+            y=list(upper_bound) + list(lower_bound[::-1]),
+            fill='toself',
+            fillcolor='rgba(255,0,0,0.3)',
+            line=dict(color='rgba(255,255,255,0)'),
+            name=f'{confidence}% Confidence Interval'
+        ))
         
-        ax.axvline(x=last_date, color='gray', linestyle=':', alpha=0.7, 
-                  label='Forecast Start')
+        # Forecast start line
+        fig.add_vline(
+            x=last_date,
+            line=dict(color='gray', dash='dot', width=1),
+            annotation=dict(text="Forecast Start", showarrow=False)
+        )
         
-        ax.set_title(f'{metric.replace("_", " ").title()} Forecast ({forecast_days} days)')
-        ax.set_xlabel('Date')
-        ax.set_ylabel(metric.replace("_", " ").title())
-        ax.legend()
-        ax.grid(True, alpha=0.3)
-        plt.xticks(rotation=45)
-        plt.tight_layout()
+        fig.update_layout(
+            title=f'{metric.replace("_", " ").title()} Forecast ({forecast_days} days)',
+            xaxis_title='Date',
+            yaxis_title=metric.replace("_", " ").title(),
+            hovermode='x unified'
+        )
+        
         return fig
     
     @render.ui
@@ -560,11 +630,12 @@ def server(input, output, session):
         return ui.div(
             ui.h4("Forecast Highlights"),
             ui.p(f"📊 Average daily: {forecast_avg:.1f}"),
-            ui.p(f"📈 Total period: {total_forecast:.0f}"),
+            ui.p(f"📈 Total period: {total_forecast:,.0f}"),
             ui.p(f"🎯 Peak expected: Day {peak_day}"),
             ui.p(f"📅 Forecast period: {forecast_days} days"),
             ui.br(),
-            ui.p("⚠️ This is a demonstration forecast. Production models would incorporate epidemiological parameters, interventions, and more sophisticated methods.",
+            ui.p("⚠️ This is a demonstration forecast. Production models would incorporate "
+                 "epidemiological parameters, interventions, and more sophisticated methods.",
                 style="font-size: 0.9em; color: #666;")
         )
 
